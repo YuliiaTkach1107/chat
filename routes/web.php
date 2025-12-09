@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Laravel\Fortify\Features;
+use App\Http\Controllers\AskController;
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\MessageController;
+
+Route::middleware(['auth'])->group(function () {
+Route::get('/chat',[ConversationController::class,'index'])->name('conversation.index');
+Route::get('/chat/{conversation}',[ConversationController::class,'show'])->name('conversation.show');
+Route::post('/chat',[ConversationController::class,'store'])->name('conversation.store');
+Route::delete('/chat/{conversation}',[ConversationController::class,'destroy'])->name('conversation.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+
+Route::post('/chat/{conversation}/messages',[MessageController::class,'store'])->name('messages.store');
+});
+Route::post('/conversation/select-model', [ConversationController::class, 'selectModel'])
+    ->name('model.select');
+
+Route::get('/ask', [AskController::class, 'index'])->name('ask.index');
+Route::post('/ask', [AskController::class, 'ask'])->name('ask.post');
+
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canRegister' => Features::enabled(Features::registration()),
+    ]);
+})->name('home');
+
+Route::get('dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__.'/settings.php';
