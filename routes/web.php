@@ -12,10 +12,12 @@ Route::get('/chat',[ConversationController::class,'index'])->name('conversation.
 Route::get('/chat/{conversation}',[ConversationController::class,'show'])->name('conversation.show');
 Route::post('/chat',[ConversationController::class,'store'])->name('conversation.store');
 Route::delete('/chat/{conversation}',[ConversationController::class,'destroy'])->name('conversation.destroy');
+Route::put('/chat/{conversation}', [ConversationController::class, 'update'])->name('conversation.update');
 });
 
 Route::middleware(['auth'])->group(function () {
 
+   
 Route::post('/chat/{conversation}/messages',[MessageController::class,'store'])->name('messages.store');
 });
 Route::post('/conversation/select-model', [ConversationController::class, 'selectModel'])

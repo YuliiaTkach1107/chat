@@ -7,6 +7,8 @@ import 'highlight.js/styles/github-dark.css'
 import { route } from 'ziggy-js'
 import { ArrowUp } from 'lucide-vue-next'
 
+const loading = ref(false)
+
 const props = defineProps({
   models: Array,
   selectedModel: String,
@@ -32,6 +34,7 @@ const localMessages = ref([...props.messages])
 const submit = () => {
   //if (!props.conversation?.id || !form.message.trim()) return
   if (!props.conversation?.id || !(form.message || '').trim()) return
+  loading.value = true
 
   form.post(route('messages.store', props.conversation.id), {
     preserveScroll: true,
@@ -39,7 +42,13 @@ const submit = () => {
       localMessages.value.push({ ...props.message })
       form.reset('message')
     },
-    onError: (err) => console.log(err)
+    onFinish: () => {
+      loading.value = false
+    },
+    onError: (err) => {
+      console.log(err)
+      loading.value = false
+    }
   })
 }
 
@@ -73,7 +82,11 @@ const changeModel = () => {
       v-html="md.render(msg.content)"
     ></div>
   </div>
-
+<div v-if="loading" class="loader">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
   <hr>
 
     <form @submit.prevent="changeModel">
@@ -131,4 +144,31 @@ textarea:focus{
   border:none;
   outline: none;
 }
+.loader {
+  display: flex;
+  gap: 6px;
+  padding-left: 10px;
+}
+
+.loader span {
+  width: 8px;
+  height: 8px;
+  background: #555;
+  border-radius: 50%;
+  animation: pulse 0.8s infinite ease-in-out;
+}
+
+.loader span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.loader span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes pulse {
+  0%, 80%, 100% { transform: scale(0.4); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
 </style>

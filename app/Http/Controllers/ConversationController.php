@@ -74,9 +74,9 @@ class ConversationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Conversation $conversation)
+    public function edit(Request $request,Conversation $conversation)
     {
-        //
+        
     }
 
     /**
@@ -84,7 +84,15 @@ class ConversationController extends Controller
      */
     public function update(Request $request, Conversation $conversation)
     {
-        //
+        abort_if($conversation->user_id !== auth()->id(), 403);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $conversation->update(['title' => $request->title]);
+
+        return back();
     }
 
     /**
