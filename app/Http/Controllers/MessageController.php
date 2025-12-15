@@ -88,11 +88,15 @@ if (empty($conversation->title) || $conversation->title === 'Nouvelle conversati
     $askService = app(\App\Services\SampleAskService::class);
     $models = $askService->getModels(); 
 
+
     // 6. Перенаправляем на show с обновленной беседой
     $conversation->load(['messages' => fn($q) => $q->orderBy('created_at','asc')]);
+    
+
     return redirect()->route('conversation.show', $conversation);
 
 }
+
 
 
 

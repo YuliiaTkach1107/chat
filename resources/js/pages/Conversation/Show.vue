@@ -6,6 +6,8 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import { route } from 'ziggy-js'
 import { ArrowUp } from 'lucide-vue-next'
+import ConversationsList from './ConversationsList.vue'
+import Sidebar from './Navigation.vue'
 
 const loading = ref(false)
 
@@ -14,7 +16,11 @@ const props = defineProps({
   selectedModel: String,
   messages: Array,
   conversation: Object,
-  error: String
+  error: String,
+  conversations: {
+    type: Array,
+    default: () => []
+  }
 })
 
 const form = useForm({ message: '', selected_model: props.selectedModel ?? '',conversation_id: props.conversation.id,   })
@@ -65,15 +71,31 @@ const changeModel = () => {
 </script>
 
 <template>
+<Sidebar/>
+<div class='parts'>
+<div class='nav-bar h-screen'>
+
+  <ConversationsList :conversations='props.conversations'/>
+</div>
 <div class="max-w-3xl mx-auto p-6 space-y-4">
 
   <!-- Ошибки -->
   <div v-if="props.error" class="p-3 bg-red-200 text-red-800 rounded">
     {{ props.error }}
   </div>
-
+ <form @submit.prevent="changeModel">
+    <input type="hidden" v-model="form.selected_model" name="selected_model">
+    <input type="hidden" :value="props.conversation.id" name="conversation_id">
+  <!-- Select моделей -->
+  <select v-model="form.selected_model" @change="changeModel" class='w-50 focus:outline-none'>
+    <option v-for="m in props.models" :key="m.id" :value="m.id">
+      {{ m.name }}
+    </option>
+  </select>
+  </form>
+<hr>
   <!-- История сообщений -->
-  <div class="space-y-4">
+  <div class="space-y-4 mb-20">
     <div
       v-for="msg in props.messages"
       :key="msg.id"
@@ -87,22 +109,10 @@ const changeModel = () => {
   <span></span>
   <span></span>
 </div>
-  <hr>
-
-    <form @submit.prevent="changeModel">
-    <input type="hidden" v-model="form.selected_model" name="selected_model">
-    <input type="hidden" :value="props.conversation.id" name="conversation_id">
-  <!-- Select моделей -->
-  <select v-model="form.selected_model" @change="changeModel" class='w-50 focus:outline-none mb-12'>
-    <option v-for="m in props.models" :key="m.id" :value="m.id">
-      {{ m.name }}
-    </option>
-  </select>
-  </form>
 
   <!-- Textarea + кнопка отправки -->
-  <div class="fixed bottom-4 left-0 right-0 px-4">
-    <div class="max-w-3xl mx-auto">
+  <div class="fixed bottom-4 left-[calc(33.333%+24px)] right-4">
+    <div class="max-w-3xl">
       <div class="flex items-center bg-white border rounded-xl shadow-md overflow-hidden">
         <textarea
           v-model="form.message"
@@ -122,6 +132,7 @@ const changeModel = () => {
     </div>
   </div>
 
+</div>
 </div>
 </template>
 
@@ -170,5 +181,12 @@ textarea:focus{
   0%, 80%, 100% { transform: scale(0.4); opacity: 0.5; }
   40% { transform: scale(1); opacity: 1; }
 }
-
+.parts{
+  display:grid;
+  grid-template-columns: 30% 70%;
+}
+.nav-bar{
+  background-color:rgb(193, 221, 246);
+  height:100%;
+}
 </style>

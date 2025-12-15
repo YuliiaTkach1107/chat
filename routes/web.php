@@ -6,6 +6,7 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\AskController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PersonnalisationController;
 
 Route::middleware(['auth'])->group(function () {
 Route::get('/chat',[ConversationController::class,'index'])->name('conversation.index');
@@ -14,6 +15,15 @@ Route::post('/chat',[ConversationController::class,'store'])->name('conversation
 Route::delete('/chat/{conversation}',[ConversationController::class,'destroy'])->name('conversation.destroy');
 Route::put('/chat/{conversation}', [ConversationController::class, 'update'])->name('conversation.update');
 });
+
+
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/personnalisation', [PersonnalisationController::class, 'index'])->name('personnalisation.index');
+    Route::post('/personnalisation', [PersonnalisationController::class, 'update'])->name('personnalisation.update');
+});
+
+
 
 Route::middleware(['auth'])->group(function () {
 

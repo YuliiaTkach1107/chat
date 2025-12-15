@@ -54,4 +54,9 @@ class User extends Authenticatable
     function conversations(){
         return $this->hasMany(Conversation::class);
     }
+    public function preferences()
+{
+    return $this->hasOne(\App\Models\UserPreference::class);
+}
+
 }

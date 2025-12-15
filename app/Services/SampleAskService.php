@@ -139,16 +139,45 @@ class SampleAskService
      * @return array{role: 'system', content: string}
      */
     private function getSystemPrompt(): array
-    {
-        $user = auth()->user()?->name ?? 'l\'utilisateur';
-        $now = now()->locale('fr')->format('l d F Y H:i');
+{
+    $user = auth()->user();
+    $preferences = $user?->preferences;
 
-        return [
-            'role' => 'system',
-            'content' => view('prompts.system', [
-                'now' => $now,
-                'user' => $user,
-            ])->render(),
-        ];
+    $now = now()->locale('fr')->format('l d F Y H:i');
+
+    $personalisationText = '';
+
+    if ($preferences) {
+        if ($preferences->about) {
+            $personalisationText .= "\n\nÀ propos de l'utilisateur :\n{$preferences->about}";
+        }
+
+        if ($preferences->behaviour) {
+            $personalisationText .= "\n\nComportement attendu de l'assistant :\n{$preferences->behaviour}";
+        }
+
+        if ($preferences->commands) {
+            $personalisationText .= "\n\nCommandes personnalisées à respecter :\n{$preferences->commands}";
+        }
     }
+
+    $systemContent = <<<PROMPT
+Tu es un assistant conversationnel.
+
+Date et heure : {$now}
+Utilisateur : {$user->name}
+
+{$personalisationText}
+
+IMPORTANT :
+- Tu dois STRICTEMENT respecter les préférences de l'utilisateur.
+- Le ton, le style et les commandes personnalisées sont prioritaires sur tout le reste.
+PROMPT;
+
+    return [
+        'role' => 'system',
+        'content' => $systemContent,
+    ];
+}
+
 }

@@ -56,6 +56,10 @@ class ConversationController extends Controller
     {
         abort_if($conversation->user_id !== auth()->id(), 403);
 
+        $conversations = auth()->user()->conversations()
+        ->orderBy('updated_at', 'desc')
+        ->get();
+        
         $conversation->load([
             'messages' => fn($q) => $q->orderBy('created_at','asc')
         ]);
@@ -64,6 +68,7 @@ class ConversationController extends Controller
          $models = $askService->getModels(); 
 
         return Inertia::render('Conversation/Show', [
+            'conversations' => $conversations,
             'conversation' => $conversation,
             'messages' => $conversation->messages,
             'models' => $models,
