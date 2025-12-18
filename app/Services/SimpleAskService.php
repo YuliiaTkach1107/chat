@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
  *
  * Exemple pédagogique utilisant le client HTTP de Laravel.
  */
-class SampleAskService
+class SimpleAskService
 {
     public const DEFAULT_MODEL = 'openai/gpt-5-mini';
 
@@ -116,7 +116,7 @@ class SampleAskService
 
         return $title;
     }*/
-        public function generateTitleFromTextAI(string $botText): string
+      /*  public function generateTitleFromTextAI(string $botText): string
 {
     // Промпт, который просит AI сделать короткий информативный заголовок
     $prompt = "Génère un titre très court et clair (3-6 mots) pour résumer cette conversation : \"$botText\"";
@@ -132,7 +132,7 @@ class SampleAskService
     // Чистим и возвращаем результат
     return trim($response) ?: "Nouvelle conversation";
 }
-
+*/
     /**
      * Retourne le prompt système.
      *
@@ -179,5 +179,36 @@ PROMPT;
         'content' => $systemContent,
     ];
 }
+
+
+public function generateTitleFromTextAI(string $botText): string
+{
+    $system = $this->getSystemPrompt(); // 👈 ТОТ ЖЕ САМЫЙ
+
+    $userPrompt = <<<PROMPT
+Génère un titre très court et clair (3-6 mots) pour résumer cette conversation : \"$botText\
+
+Règles :
+- Utilise STRICTEMENT la même langue que celle du message
+- Ne dis rien d'autre que le titre
+- Pas de guillemets, pas d'explications
+
+Message :
+{$botText}
+PROMPT;
+
+    $response = $this->sendMessage([
+        $system,
+        [
+            'role' => 'user',
+            'content' => [
+                ['type' => 'text', 'text' => $userPrompt]
+            ]
+        ]
+    ], self::DEFAULT_MODEL);
+
+    return trim($response) ?: 'Nouvelle conversation';
+}
+
 
 }

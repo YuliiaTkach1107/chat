@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\SampleAskService;
+use App\Services\SimpleAskService;
 use Illuminate\Http\Request;
 use Inertia\Inertia; 
 
 class AskController extends Controller
 {
-    public function __construct(private SampleAskService $askService) {}
+    public function __construct(private SimpleAskService $askService) {}
 
     public function index()
     {

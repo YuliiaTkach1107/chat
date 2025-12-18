@@ -32,6 +32,7 @@
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
         "@inertiajs/vue3": "^2.1.0",
+        "@laravel/stream-vue": "^0.3.10",
         "@tailwindcss/typography": "^0.5.19",
         "@vueuse/core": "^12.8.2",
         "class-variance-authority": "^0.7.1",

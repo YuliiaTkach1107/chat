@@ -8,6 +8,13 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PersonnalisationController;
 
+
+Route::get('/ask-stream', [\App\Http\Controllers\AskStreamController::class, 'index'])
+    ->name('stream.index');
+    
+Route::post('/ask-stream', [\App\Http\Controllers\AskStreamController::class, 'stream'])
+    ->name('stream.post');
+
 Route::middleware(['auth'])->group(function () {
 Route::get('/chat',[ConversationController::class,'index'])->name('conversation.index');
 Route::get('/chat/{conversation}',[ConversationController::class,'show'])->name('conversation.show');
@@ -45,5 +52,7 @@ Route::get('/', function () {
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 require __DIR__.'/settings.php';

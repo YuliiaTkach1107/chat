@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use App\Models\Conversation;
-use App\Services\SampleAskService;
+use App\Services\SimpleAskService;
 use Inertia\Inertia;
 
 class MessageController extends Controller
@@ -28,7 +28,7 @@ class MessageController extends Controller
     /**
      * Store a newly created message and get bot response.
      */
-     public function store(Request $request, Conversation $conversation, \App\Services\SampleAskService $chatService)
+     public function store(Request $request, Conversation $conversation, \App\Services\SimpleAskService $chatService)
 {
     ini_set('max_execution_time', 120);
     // Проверка прав пользователя
@@ -85,7 +85,7 @@ if (empty($conversation->title) || $conversation->title === 'Nouvelle conversati
     }
 
     // 5. Загружаем модели для фронта
-    $askService = app(\App\Services\SampleAskService::class);
+    $askService = app(\App\Services\SimpleAskService::class);
     $models = $askService->getModels(); 
 
 

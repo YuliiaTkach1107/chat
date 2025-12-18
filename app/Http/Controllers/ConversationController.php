@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Services\SampleAskService;
+use App\Services\SimpleAskService;
 
 class ConversationController extends Controller
 {
 
-    public function __construct(private SampleAskService $askService) {}
+    public function __construct(private SimpleAskService $askService) {}
     /**
      * Display a listing of the resource.
      */
@@ -64,7 +64,7 @@ class ConversationController extends Controller
             'messages' => fn($q) => $q->orderBy('created_at','asc')
         ]);
         // Получаем список моделей
-         $askService = app(SampleAskService::class);
+         $askService = app(SimpleAskService::class);
          $models = $askService->getModels(); 
 
         return Inertia::render('Conversation/Show', [
