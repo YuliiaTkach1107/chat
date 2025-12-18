@@ -9,6 +9,8 @@ import { ArrowUp } from 'lucide-vue-next'
 import ConversationsList from './ConversationsList.vue'
 import Sidebar from './Navigation.vue'
 import { useStream } from '@laravel/stream-vue'
+import { router } from '@inertiajs/vue3'
+
 
 const loading = ref(false)
 const streamingAssistantMessage = ref(null)
@@ -105,7 +107,14 @@ const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream',
   onFinish: () => {
   streamingAssistantMessage.value = null
   loading.value = false
-  },
+
+  // 🔥 ОБНОВЛЯЕМ СПИСОК БЕСЕД
+  router.reload({
+    only: ['conversations'],
+    preserveState: false,
+    preserveScroll: true,
+  })
+},
   onError: (err) => {
     console.error('Erreur de streaming:', err)
     loading.value = false
