@@ -46,6 +46,7 @@ class AskStreamController extends Controller
      */
       public function stream(Request $request): StreamedResponse
 {
+    set_time_limit(200);
     $validated = $request->validate([
         'message' => 'required|string',
         'model' => 'required|string',

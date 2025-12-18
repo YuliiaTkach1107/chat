@@ -36,6 +36,7 @@ const form = useForm({
 })
 
 const md = new MarkdownIt({
+  html: false,
   highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try { return hljs.highlight(str, { language: lang }).value } catch {} 
@@ -100,7 +101,7 @@ const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream',
     if (!streamingAssistantMessage.value) return
     //console.log('Chunk received:', chunk)
     //console.log('Before append:', streamingAssistantMessage.value?.content)
-    streamingAssistantMessage.value.content += chunk
+    streamingAssistantMessage.value.content += chunk.replace(/\[REASONING\][\s\S]*?\[\/REASONING\]/g, '');
     //console.log('After append:', streamingAssistantMessage.value?.content)
 
   },
@@ -108,7 +109,6 @@ const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream',
   streamingAssistantMessage.value = null
   loading.value = false
 
-  // 🔥 ОБНОВЛЯЕМ СПИСОК БЕСЕД
   router.reload({
     only: ['conversations'],
     preserveState: false,
@@ -118,6 +118,7 @@ const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream',
   onError: (err) => {
     console.error('Erreur de streaming:', err)
     loading.value = false
+    cancel()
   }
 })
 
@@ -175,7 +176,7 @@ const streamedReasoning = computed(() => {
     class="p-3 rounded"
     :class="msg.role === 'user' ? 'bg-gray-200' : 'bg-gray-100'"
   >
-    <div v-html="md.render(msg.content)"></div>
+    <div class="prose" v-html="md.render(msg.content)"></div>
   </div>
 </div>
 

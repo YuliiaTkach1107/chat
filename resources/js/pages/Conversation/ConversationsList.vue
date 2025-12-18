@@ -91,7 +91,10 @@ function createConversation() {
 
 function deleteConversation(id) {
   if (confirm('Voulez-vous vraiment supprimer la conversation?')) {
-    Inertia.delete(route('conversation.destroy',id))
+    Inertia.delete(route('conversation.destroy',id),{
+      preserveScroll: false, 
+      preserveState: true, 
+    })
   }
 }
 

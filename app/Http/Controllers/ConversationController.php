@@ -110,6 +110,7 @@ class ConversationController extends Controller
                $conversation->delete();
                return redirect()->route('conversation.index')
                      ->with('success', 'La conversation a été supprimée avec succès.');
+                      
         
     }
 
