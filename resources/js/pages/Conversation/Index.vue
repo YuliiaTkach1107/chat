@@ -1,11 +1,7 @@
 <template>
- <Sidebar/>
+ <ConversationLayout 
+  :conversations="conversations">
   <div class="flex max-w-6xl mx-auto h-screen parts">
-    <!-- Список бесед слева -->
-    <div class="border-r overflow-y-auto nav-bar">
-      <ConversationsList :conversations="conversations" />
-    </div>
-
     <!-- Правая часть -->
     <div class="flex-1 overflow-y-auto">
       <template v-if="activeConversation">
@@ -26,12 +22,11 @@
       </template>
     </div>
     </div>  
+ </ConversationLayout>
 </template>
 
 <script setup>
-import ConversationsList from './ConversationsList.vue'
-import Sidebar from './Navigation.vue'
-
+import ConversationLayout from './layouts/ConversationLayout.vue'
 const props = defineProps({
   conversations: {
     type: Array,

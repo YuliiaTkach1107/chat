@@ -6,11 +6,9 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 import { route } from 'ziggy-js'
 import { ArrowUp } from 'lucide-vue-next'
-import ConversationsList from './ConversationsList.vue'
-import Sidebar from './Navigation.vue'
 import { useStream } from '@laravel/stream-vue'
 import { router } from '@inertiajs/vue3'
-
+import ConversationLayout from './layouts/ConversationLayout.vue'
 
 const loading = ref(false)
 const streamingAssistantMessage = ref(null)
@@ -143,11 +141,9 @@ const streamedReasoning = computed(() => {
 </script>
 
 <template>
-  <Sidebar/>
+  <ConversationLayout 
+  :conversations="conversations">
   <div class='parts'>
-    <div class='nav-bar h-screen'>
-      <ConversationsList :conversations='props.conversations'/>
-    </div>
 
     <div class="max-w-3xl mx-auto p-6 space-y-4">
 
@@ -209,6 +205,7 @@ const streamedReasoning = computed(() => {
 
     </div>
   </div>
+  </ConversationLayout>
 </template>
 
 <style scoped>

@@ -7,7 +7,10 @@ use App\Http\Controllers\AskController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PersonnalisationController;
+use App\Http\Controllers\LandingController;
 
+
+Route::get('/landing', [LandingController::class, 'index'])->name('landing');
 
 Route::get('/ask-stream', [\App\Http\Controllers\AskStreamController::class, 'index'])
     ->name('stream.index');
