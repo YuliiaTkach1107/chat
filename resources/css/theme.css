@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+
+  --background: #FFF8F3;
+  --foreground: #4A4238;
+
+  --card: #FFFBF7;
+  --card-foreground: #4A4238;
+
+  --primary: #E8A87C;
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #F5E6D3;
+  --secondary-foreground: #4A4238;
+
+  --muted: #F0E5D8;
+  --muted-foreground: #8B7E6A;
+
+  --accent: #FFE8D9;
+  --accent-foreground: #4A4238;
+
+  --destructive: #D4825C;
+  --destructive-foreground: #FFFFFF;
+
+  --border: rgba(232, 168, 124, 0.2);
+  --ring: #E8A87C;
+
+  --radius: 1rem;
+}
+
+.dark {
+  --background: #2C2520;
+  --foreground: #F5E6D3;
+
+  --card: #3A3228;
+  --card-foreground: #F5E6D3;
+
+  --secondary: #4A4238;
+  --secondary-foreground: #F5E6D3;
+}
+
+/* =======================
+   TAILWIND BASE STYLES
+======================= */
+
+@layer base {
+  html {
+    font-size: var(--font-size);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  * {
+    @apply border-border;
+  }
+}
