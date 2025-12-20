@@ -26,7 +26,7 @@ public function update(Request $request)
     $preferences->$tab = $value;
     $preferences->save();
 
-    return response()->json(['success' => true]);
+    return redirect()->back()->with('success', 'Vos modifications ont été enregistrées !');
 }
 
 }

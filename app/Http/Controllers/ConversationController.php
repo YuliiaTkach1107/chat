@@ -41,12 +41,23 @@ class ConversationController extends Controller
     {
         $request->validate([
             'title' => 'nullable|string|max:255',
+            'first_message' => 'nullable|string',
         ]);
         $conversation = auth()->user()->conversations()->create([
             'title' => $request->title ?? 'Nouvelle conversation',
             'selected_model' => $this->askService::DEFAULT_MODEL, 
         ]);
-        return redirect()->route('conversation.show',$conversation);
+
+        if ($request->filled('message')) {
+        $conversation->messages()->create([
+            'role' => 'user',
+            'content' => $request->message,
+        ]);
+    }
+        return redirect()->route('conversation.show',[
+            'conversation' => $conversation,
+            'autoSend'=>true,
+        ]);
     }
 
     /**

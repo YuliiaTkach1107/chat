@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
+        "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/vue3": "^2.1.0",
         "@laravel/stream-vue": "^0.3.10",
         "@tailwindcss/typography": "^0.5.19",

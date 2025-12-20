@@ -4,7 +4,7 @@
     <Features />
     <Pricing />
     <Testimonials />
-    <Faq />
+    <FAQ />
     <About />
     <Footer />
   </div>
@@ -15,7 +15,7 @@ import Hero from '@/Components/landing/Hero.vue'
 import Features from '@/Components/landing/Features.vue'
 import Pricing from '@/Components/landing/Pricing.vue'
 import Testimonials from '@/Components/landing/Testimonials.vue'
-import FAQ from '@/Components/landing/FAQ.vue'
+import FAQ from '@/Components/landing/Faq.vue'
 import About from '@/Components/landing/About.vue'
 import Footer from '@/Components/landing/Footer.vue'
 </script>
@@ -27,6 +27,6 @@ body {
 .landing-page {
   display: flex;
   flex-direction: column;
-  gap: 8rem;
 }
+
 </style>

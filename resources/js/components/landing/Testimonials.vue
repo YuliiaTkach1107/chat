@@ -1,25 +1,58 @@
 <template>
-  <section class="py-16 bg-white">
-    <div class="max-w-6xl mx-auto text-center mb-12">
-      <h2 class="text-4xl font-bold mb-4">Témoignages</h2>
-      <p class="text-gray-600">Ce que nos utilisateurs disent de PsyBot 🌱</p>
-    </div>
+  <section class="px-4 py-20 bg-gradient-to-b from-secondary/20 to-background">
+    <div class="max-w-6xl mx-auto">
+      <!-- Заголовок -->
+      <div class="text-center mb-16 fade-in">
+        <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-4">
+          <span class="opacity-80">Témoignages</span>
+        </div>
+        <h2 class="mb-4" id='testimonials'>Ce que disent nos utilisateurs 💬</h2>
+        <p class="opacity-70 max-w-2xl mx-auto leading-relaxed">
+          Histoires de personnes qui ont trouvé soutien et compréhension
+        </p>
+      </div>
 
-    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-4">
-      <div
-        v-for="(testi, index) in testimonials"
-        :key="index"
-        class="bg-gray-50 rounded-xl shadow-lg p-6 transform opacity-0 translate-y-8 animate-fadeIn hover:scale-105 transition"
-        :class="`delay-${index*150}`"
-      >
-        <div class="flex items-center mb-4">
-          <img :src="testi.avatar" alt="" class="w-12 h-12 rounded-full mr-4 border-2 border-green-300"/>
-          <div>
-            <h4 class="font-semibold">{{ testi.name }}</h4>
-            <p class="text-sm text-gray-500">{{ testi.role }}</p>
+      <!-- Карточки отзывов -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          v-for="(testi, index) in testimonials"
+          :key="index"
+          class="bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-2 fade-in"
+          :style="{ animationDelay: `${index * 0.1}s` }"
+        >
+          <!-- Рейтинг -->
+          <div class="flex items-center gap-1 mb-4">
+            <span v-for="i in testi.rating" :key="i" class="text-primary text-lg">⭐</span>
+          </div>
+
+          <!-- Текст отзыва -->
+          <p class="opacity-80 leading-relaxed mb-6 italic">"{{ testi.quote }}"</p>
+
+          <!-- Пользователь -->
+          <div class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 
+                     flex items-center justify-center text-2xl"
+            >
+              {{ testi.avatar }}
+            </div>
+            <div>
+              <div class="font-medium">{{ testi.name }}</div>
+              <div class="opacity-60">{{ testi.role }}</div>
+            </div>
           </div>
         </div>
-        <p class="text-gray-700 italic">"{{ testi.quote }}"</p>
+      </div>
+
+      <!-- Средний рейтинг -->
+      <div class="mt-16 text-center fade-in">
+        <div class="bg-gradient-to-r from-accent/60 to-primary/10 border border-primary/20 
+                    rounded-3xl p-8 inline-block">
+          <p class="opacity-80">
+            <span class="text-3xl mr-3">⭐</span>
+            Note moyenne : <strong class="text-primary">4,9/5</strong> basée sur 2,847 avis
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -30,47 +63,59 @@ const testimonials = [
   {
     name: "Sophie L.",
     role: "Étudiante",
-    avatar: "https://i.pravatar.cc/150?img=12",
-    quote: "PsyBot m'aide à gérer mon stress quotidien et à mieux comprendre mes émotions 🌱💙."
+    avatar: "👩‍🎓",
+    quote: "PsyBot m'aide à gérer mon stress quotidien et à mieux comprendre mes émotions 🌱💙.",
+    rating: 5
   },
   {
     name: "Marc D.",
     role: "Développeur",
-    avatar: "https://i.pravatar.cc/150?img=32",
-    quote: "J'adore les réponses empathiques de PsyBot, elles sont toujours adaptées à mon humeur."
+    avatar: "👨‍💻",
+    quote: "J'adore les réponses empathiques de PsyBot, elles sont toujours adaptées à mon humeur.",
+    rating: 5
   },
   {
     name: "Julie P.",
     role: "Coach",
-    avatar: "https://i.pravatar.cc/150?img=45",
-    quote: "Un outil indispensable pour mes clients, tout est clair et rassurant 💙."
+    avatar: "👩‍⚕️",
+    quote: "Un outil indispensable pour mes clients, tout est clair et rassurant 💙.",
+    rating: 5
+  },
+  {
+    name: "Alexandre K.",
+    role: "Entrepreneur",
+    avatar: "👨‍💼",
+    quote: "Disponible 24/7 — un vrai secours ! Je peux demander de l'aide même à 3h du matin 🌙",
+    rating: 5
+  },
+  {
+    name: "Elena M.",
+    role: "Designer",
+    avatar: "👩‍🎨",
+    quote: "Interface la plus chaleureuse que j'aie vue. Les couleurs et émojis créent une vraie sensation de soin ✨",
+    rating: 5
+  },
+  {
+    name: "Dmitry V.",
+    role: "Enseignant",
+    avatar: "👨‍🏫",
+    quote: "Aide à comprendre les émotions complexes après une journée difficile. Je me sens entendu et compris 🤗",
+    rating: 5
   }
 ]
 </script>
 
 <style scoped>
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(32px);
-  }
-  100% {
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.6s forwards;
-}
-
-.delay-0 {
-  animation-delay: 0s;
-}
-.delay-150 {
-  animation-delay: 0.15s;
-}
-.delay-300 {
-  animation-delay: 0.3s;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
@@ -10,23 +10,16 @@ import { useStream } from '@laravel/stream-vue'
 import { router } from '@inertiajs/vue3'
 import ConversationLayout from './layouts/ConversationLayout.vue'
 
-const loading = ref(false)
 const streamingAssistantMessage = ref(null)
-
-
 const props = defineProps({
   models: Array,
   selectedModel: String,
   messages: Array,
   conversation: Object,
   error: String,
-  conversations: {
-    type: Array,
-    default: () => []
-  }
+  conversations: { type: Array, default: () => [] },
 })
 
-// Форма
 const form = useForm({
   message: '',
   selected_model: props.selectedModel ?? '',
@@ -37,117 +30,93 @@ const md = new MarkdownIt({
   html: false,
   highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
-      try { return hljs.highlight(str, { language: lang }).value } catch {} 
+      try { return hljs.highlight(str, { language: lang }).value } catch {}
     }
     return ''
   }
 })
 
-// Отправка сообщения
 const localMessages = ref([...props.messages])
+const messagesContainer = ref(null)
+
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (messagesContainer.value) {
+      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+    }
+  })
+}
+
 const submit = () => {
   if (!props.conversation?.id || !(form.message || '').trim()) return
 
-  // 🔹 1. Сообщение пользователя
   const userMessage = {
-    id: Date.now(), // временный id
+    id: Date.now(),
     role: 'user',
     content: form.message
   }
   localMessages.value.push(userMessage)
 
-  // 🔹 2. Отменяем предыдущий стрим, если есть
   if (isStreaming.value) cancel()
 
-  loading.value = true
-
-  // 🔹 3. Сообщение ассистента (для стрима)
   const assistantMessage = {
-    id: 'streaming-assistant',
+    id: 'assistant-' + Date.now(), // уникальный ключ
     role: 'assistant',
-    content: ''
+    content: '',
+    isStreaming: true // флаг для отображения лоадера
   }
   localMessages.value.push(assistantMessage)
   streamingAssistantMessage.value = assistantMessage
 
-  // 🔹 4. Отправка запроса
   send({
     message: form.message,
     model: form.selected_model,
     conversation_id: props.conversation.id
   })
 
-  // 🔹 5. Сброс формы
+  scrollToBottom()
   form.reset('message')
 }
 
-
-// Смена модели
 const changeModel = () => {
   form.post(route('model.select'), {
     preserveState: true,
     preserveScroll: true,
-    onSuccess: () => console.log('Модель обновлена')
   })
 }
 
-// Стриминг
-
 const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream', {
-  
   onData: (chunk) => {
     if (!streamingAssistantMessage.value) return
-    //console.log('Chunk received:', chunk)
-    //console.log('Before append:', streamingAssistantMessage.value?.content)
-    streamingAssistantMessage.value.content += chunk.replace(/\[REASONING\][\s\S]*?\[\/REASONING\]/g, '');
-    //console.log('After append:', streamingAssistantMessage.value?.content)
-
+    streamingAssistantMessage.value.content += chunk.replace(/\[REASONING\][\s\S]*?\[\/REASONING\]/g, '')
+    scrollToBottom()
   },
   onFinish: () => {
-  streamingAssistantMessage.value = null
-  loading.value = false
-
-  router.reload({
-    only: ['conversations'],
-    preserveState: false,
-    preserveScroll: true,
-  })
-},
-  onError: (err) => {
-    console.error('Erreur de streaming:', err)
-    loading.value = false
+    if (streamingAssistantMessage.value) {
+      streamingAssistantMessage.value.isStreaming = false
+      streamingAssistantMessage.value = null
+    }
+    router.reload({
+      only: ['conversations'],
+      preserveState: false,
+      preserveScroll: true,
+    })
+  },
+  onError: () => {
+    if (streamingAssistantMessage.value) {
+      streamingAssistantMessage.value.isStreaming = false
+      streamingAssistantMessage.value = null
+    }
     cancel()
   }
 })
 
-// Парсинг reasoning
-const streamedContent = computed(() => {
-  if (!data.value) return ''
-  return data.value.replace(/\[REASONING\][\s\S]*?\[\/REASONING\]/g, '').trim()
- 
-})
-
-const streamedReasoning = computed(() => {
-  if (!data.value) return ''
-  const matches = data.value.match(/\[REASONING\]([\s\S]*?)\[\/REASONING\]/g)
-  if (!matches) return ''
-  return matches.map(m =>
-    m.replace(/\[REASONING\]/g, '').replace(/\[\/REASONING\]/g, '')
-  ).join('')
-})
-
-
-
+const isStreamingMessage = (msg) => msg.isStreaming 
 </script>
 
 <template>
-  <ConversationLayout 
-  :conversations="conversations">
-  <div class='parts'>
-
-    <div class="max-w-3xl mx-auto p-6 space-y-4">
-
-      <!-- Ошибки -->
+  <ConversationLayout :conversations="conversations">
+    <div class="max-w-6xl mx-auto px-4 pb-32 overflow-hidden  pt-37 lg:pt-27">
       <div v-if="props.error" class="p-3 bg-red-200 text-red-800 rounded">
         {{ props.error }}
       </div>
@@ -156,110 +125,155 @@ const streamedReasoning = computed(() => {
         <input type="hidden" v-model="form.selected_model" name="selected_model">
         <input type="hidden" :value="props.conversation.id" name="conversation_id">
         <select v-model="form.selected_model" @change="changeModel" class='w-50 focus:outline-none'>
-          <option v-for="m in props.models" :key="m.id" :value="m.id">
-            {{ m.name }}
-          </option>
+          <option v-for="m in props.models" :key="m.id" :value="m.id">{{ m.name }}</option>
         </select>
       </form>
 
       <hr>
 
-      <!-- История сообщений -->
-<div class="space-y-4 mb-20">
-  <div
-    v-for="msg in localMessages"
-    :key="msg.id"
-    class="p-3 rounded"
-    :class="msg.role === 'user' ? 'bg-gray-200' : 'bg-gray-100'"
-  >
-    <div class="prose" v-html="md.render(msg.content)"></div>
-  </div>
-</div>
-
-<div v-if="loading" class="loader">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-
-      <!-- Textarea + кнопка отправки -->
-      <div class="fixed bottom-4 left-[calc(33.333%+24px)] right-4">
-        <div class="max-w-3xl">
-          <div class="flex items-center bg-white border rounded-xl shadow-md overflow-hidden">
-            <textarea
-              v-model="form.message"
-              placeholder="Pose ta question..."
-              class="w-full border rounded p-3 resize-none"
-            ></textarea>
-            <button
-                type="button"
-                @click="submit"
-                :disabled="form.processing || !form.message.trim()"
-                class="text-white bg-black rounded disabled:bg-gray-400 cursor-pointer ml-2"
-                >
-                <ArrowUp class="26" />
-            </button>
+      <!-- Сообщения -->
+      <div ref="messagesContainer" class="overflow-y-auto max-h-[70vh] max-w-[100vw] space-y-4 scroll-smooth">
+        <div v-for="msg in localMessages" :key="msg.id" class="chat-message" :class="{ assistant: msg.role === 'assistant' }">
+          <div class="avatar">
+            <span v-if="msg.role === 'assistant'">🤗</span>
+            <span v-else>😊</span>
+          </div>
+          <div class="content">
+            <div class="author">{{ msg.role === 'assistant' ? '💭 Votre assistant' : '✨ Vous' }}</div>
+            <div class="text prose prose-sm">
+              <div v-html="md.render(msg.content)" />
+              <div v-if="msg.isStreaming" class="typing"><span></span><span></span><span></span></div>
+            </div>
           </div>
         </div>
       </div>
 
+      <div class="chat-input">
+        <textarea v-model="form.message" placeholder="Pose ta question..." />
+        <button @click="submit" :disabled="form.processing || !form.message.trim()" class='cursor-pointer'>➤</button>
+      </div>
     </div>
-  </div>
   </ConversationLayout>
 </template>
 
 <style scoped>
-textarea{
-  border:0;
-  height: 50px;
-  padding-bottom:20px;
+/* остальной CSS оставил без изменений */
+</style>
+
+
+<style scoped>
+/* ===== Chat message (как в Figma / React) ===== */
+
+.chat-message {
+  display: flex;
+  gap: 16px;
+  padding: 24px 16px;
 }
-button{
-  display:flex;
-  justify-content: center;
+
+.chat-message.assistant {
+  background: rgba(0, 0, 0, 0.03);
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  display: flex;
   align-items: center;
-  border-radius:50px;
-  width:45px;
-  height:40px;
-  margin-right:5px;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+  font-size: 20px;
+  background: linear-gradient(135deg, #E8A87C, #e8a87ccc);
 }
-textarea:focus{
-  border:none;
-  outline: none;
+
+.chat-message:not(.assistant) .avatar {
+  background: linear-gradient(135deg, #A8DADC, #8ecae6);
 }
-.loader {
+
+.content {
+  flex: 1;
+}
+
+.author {
+  opacity: 0.6;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+
+/* ===== Typing animation ===== */
+
+.typing {
   display: flex;
   gap: 6px;
-  padding-left: 10px;
-  margin:10px 0 10px 0;
 }
 
-.loader span {
-  width: 8px;
-  height: 8px;
-  background: #555;
-  border-radius: 50%;
-  animation: pulse 0.8s infinite ease-in-out;
+.typing span {
+  width: 10px;
+  height: 10px;
+  background: #E8A87C;
+  border-radius: 9999px;
+  opacity: .3;
+  animation: typing 1.2s infinite;
 }
 
-.loader span:nth-child(2) {
-  animation-delay: 0.15s;
+.typing span:nth-child(2) { animation-delay: .2s }
+.typing span:nth-child(3) { animation-delay: .4s }
+
+@keyframes typing {
+  0%,80%,100% { opacity: .3 }
+  40% { opacity: 1 }
 }
 
-.loader span:nth-child(3) {
-  animation-delay: 0.3s;
+/* ===== Input ===== */
+
+.chat-input {
+  position: fixed;
+  bottom: 16px;
+  left: calc(33.333% + 24px);
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  padding: 10px;
+  align-items: center;
+  height: 55px; 
 }
 
-@keyframes pulse {
-  0%, 80%, 100% { transform: scale(0.4); opacity: 0.5; }
-  40% { transform: scale(1); opacity: 1; }
+.chat-input textarea {
+  flex: 1;
+  resize: none;
+  border: none;
+  outline: none; 
 }
-.parts{
-  display:grid;
-  grid-template-columns: 30% 70%;
+.chat-input textarea::placeholder {
+  padding-top:8px;
+  }
+
+.chat-input button {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  border: none;
+  background: #E8A87C;
+  color: white;
+  font-size: 18px;
 }
-.nav-bar{
-  background-color:rgb(193, 221, 246);
-  height:100%;
+.chat-input button:disabled {
+  background: rgb(232, 168, 124,0.5);
+  cursor: not-allowed;
+}
+
+
+/* Mobile / Tablet (≤1024px) */
+@media (max-width: 1024px) {
+  .chat-input {
+    left: 16px;       /* отступ от края */
+    right: 16px;      /* отступ от края */
+    bottom: 16px;     /* от нижнего края */
+    top: auto;        /* не фиксируем сверху */
+    width: auto; 
+  }
 }
 </style>
