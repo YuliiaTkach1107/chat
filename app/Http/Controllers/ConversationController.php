@@ -23,6 +23,11 @@ class ConversationController extends Controller
 
         return Inertia::render('Conversation/Index',[
             'conversations'=>$conversations,
+            'meta' => [
+                'title' => 'Mes conversations – PsyBot',
+                'description' => 'Consultez toutes vos conversations avec PsyBot. Retrouvez et poursuivez vos discussions facilement.',
+                'url' => route('conversation.index') // полная ссылка для SSR
+    ],
         ]);
     }
 
@@ -84,6 +89,11 @@ class ConversationController extends Controller
             'messages' => $conversation->messages,
             'models' => $models,
             'selectedModel' => $conversation->selected_model,
+            'meta' => [
+                'title' => ($conversation->title ?? 'Nouvelle conversation') . ' – PsyBot',
+                'description' => 'Continuez votre conversation avec PsyBot. Partagez vos pensées et recevez du soutien psychologique.'
+    ]
+            
         ]);
     }
 

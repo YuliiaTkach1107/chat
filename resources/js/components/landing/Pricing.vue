@@ -1,12 +1,17 @@
 <template>
   <section id="tarifs" class="px-4 py-20 bg-gradient-to-b from-background to-secondary/20"  aria-labelledby="pricing-title">
     <div class="max-w-6xl mx-auto">
+
       <!-- Заголовок -->
       <div class="text-center mb-16 fade-in">
         <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-4">
           <span class="opacity-80">Tarifs</span>
         </div>
-        <h2 id="pricing-title" class="mb-4">Choisissez votre plan 💛</h2>
+
+        <h2 id="pricing-title" class="mb-4">
+          Choisissez votre plan 
+          <span role="img" aria-label="coeur jaune">💛</span>
+          </h2>
         <p class="opacity-70 max-w-2xl mx-auto leading-relaxed">
           Commencez par le plan gratuit ou choisissez une formule avec plus de fonctionnalités
         </p>
@@ -14,25 +19,32 @@
 
       <!-- Карточки тарифов -->
       <div class="grid md:grid-cols-3 gap-6">
-        <div
+
+        <article
           v-for="(plan, index) in plans"
           :key="index"
+          tabindex="0"
           class="relative bg-card border rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2 fade-in"
           :class="plan.popular ? 'border-primary/40 shadow-lg' : 'border-border'"
+          :aria-label="`Plan ${plan.name}`"
         >
           <!-- Популярный план -->
           <div
             v-if="plan.popular"
             class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-primary/80 
                   text-primary-foreground px-6 py-2 rounded-full shadow-lg"
+            aria-label="Plan le plus populaire"
           >
-            <span>Populaire 🌟</span>
+            <span aria-hidden="true">Populaire 🌟</span>
           </div>
 
           <div class="text-center mb-6">
-            <div class="text-5xl mb-4">{{ plan.emoji }}</div>
+            <div class="text-5xl mb-4" role="img" :aria-label="plan.name">{{ plan.emoji }}</div>
+
             <h3 class="mb-2">{{ plan.name }}</h3>
+
             <p class="opacity-60 mb-4">{{ plan.description }}</p>
+
             <div class="mb-2">
               <span class="text-4xl font-bold text-primary">{{ plan.price }}</span>
               <span v-if="plan.period" class="opacity-60 ml-1">{{ plan.period }}</span>
@@ -45,7 +57,8 @@
               :key="i"
               class="flex items-start gap-3"
             >
-              <div class="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div class="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5"
+                   aria-hidden="true">
                 <svg class="w-3 h-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.121-4.121a1 1 0 011.414-1.414L8.414 12.586l7.879-7.879a1 1 0 011.414 0z" clip-rule="evenodd"/>
                 </svg>
@@ -60,13 +73,17 @@
           >
             {{ plan.price === 'Gratuit' ? 'Commencer gratuitement' : 'Choisir ce plan' }}
           </button>
-        </div>
+        </article>
       </div>
 
       <!-- Промо -->
       <div class="mt-12 text-center fade-in">
-        <p class="opacity-60">🎁 Premier mois de tout plan payant à -50%</p>
+        <p class="opacity-60">
+          <span role="img" aria-label="cadeau">🎁</span>
+           Premier mois de tout plan payant à -50%
+           </p>
       </div>
+      
     </div>
   </section>
 </template>

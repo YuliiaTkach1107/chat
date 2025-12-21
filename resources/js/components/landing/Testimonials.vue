@@ -1,12 +1,17 @@
 <template>
   <section id="testimonials" class="px-4 py-20 bg-gradient-to-b from-secondary/20 to-background" aria-labelledby="testimonials-title">
     <div class="max-w-6xl mx-auto">
+
       <!-- Заголовок -->
       <div class="text-center mb-16 fade-in">
         <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-4">
           <span class="opacity-80">Témoignages</span>
         </div>
-        <h2 class="mb-4" id="testimonials-title">Ce que disent nos utilisateurs 💬</h2>
+
+        <h2 class="mb-4" id="testimonials-title">Ce que disent nos utilisateurs  
+          <span role="img" aria-label="bulle de discussion">💬</span>
+        </h2>
+
         <p class="opacity-70 max-w-2xl mx-auto leading-relaxed">
           Histoires de personnes qui ont trouvé soutien et compréhension
         </p>
@@ -14,46 +19,60 @@
 
       <!-- Карточки отзывов -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div
+        <article
           v-for="(testi, index) in testimonials"
           :key="index"
+          tabindex="0"
           class="bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-2 fade-in"
           :style="{ animationDelay: `${index * 0.1}s` }"
+          :aria-label="`Témoignage de ${testi.name}`"
         >
+
           <!-- Рейтинг -->
-          <div class="flex items-center gap-1 mb-4">
-            <span v-for="i in testi.rating" :key="i" class="text-primary text-lg">⭐</span>
+          <div class="flex items-center gap-1 mb-4" :aria-label="`Note : ${testi.rating} sur 5`">
+            <span v-for="i in testi.rating" 
+            :key="i" 
+            class="text-primary text-lg"
+            aria-label="étoile">
+            ⭐
+            </span>
           </div>
 
           <!-- Текст отзыва -->
-          <p class="opacity-80 leading-relaxed mb-6 italic">"{{ testi.quote }}"</p>
+          <blockquote class="opacity-80 leading-relaxed mb-6 italic">"{{ testi.quote }}"</blockquote>
 
           <!-- Пользователь -->
           <div class="flex items-center gap-3">
             <div
               class="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 
                      flex items-center justify-center text-2xl"
+              role="img"
+              :aria-label="`avatar de ${testi.name}`"
             >
               {{ testi.avatar }}
             </div>
+
             <div>
               <div class="font-medium">{{ testi.name }}</div>
               <div class="opacity-60">{{ testi.role }}</div>
             </div>
+
           </div>
-        </div>
+        </article>
       </div>
 
       <!-- Средний рейтинг -->
       <div class="mt-16 text-center fade-in">
         <div class="bg-gradient-to-r from-accent/60 to-primary/10 border border-primary/20 
-                    rounded-3xl p-8 inline-block">
+                    rounded-3xl p-8 inline-block"
+              aria-label="Note moyenne 4.9 sur 5 basée sur 2847 avis">
           <p class="opacity-80">
-            <span class="text-3xl mr-3">⭐</span>
+            <span class="text-3xl mr-3" aria-hidden="true">⭐</span>
             Note moyenne : <strong class="text-primary">4,9/5</strong> basée sur 2,847 avis
           </p>
         </div>
       </div>
+      
     </div>
   </section>
 </template>

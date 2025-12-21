@@ -9,14 +9,15 @@
         <!-- Левая часть -->
         <div class="text-left">
           <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
-            <span class="text-primary">✨</span>
+            <span class="text-primary" role="img" aria-label="étincelle">✨</span>
             <span class="opacity-80">Votre assistant personnel</span>
           </div>
 
           <h1 id="hero-title" class="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
               Un soutien psychologique,
             <span class="block text-primary mt-2">
-              quand vous en avez besoin 💛
+              quand vous en avez besoin 
+            <span role="img" aria-label="coeur jaune">💛</span>
             </span>
           </h1>
 
@@ -28,12 +29,15 @@
           <!-- ОДНА кнопка -->
           <button
             @click="goHome"
+             role="button"
+             tabindex="0"
             class="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground 
                    px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all
                    flex items-center gap-2 cursor-pointer"
                    aria-label="Commencer une conversation avec PsyBot"
           >
-            💬 Commencer la conversation
+            <span role="img" aria-label="bulle de discussion">💬</span>
+             Commencer la conversation
           </button>
 
           <!-- Иконки -->
@@ -63,7 +67,8 @@
                 <div class="flex items-center gap-3 ">
                   <div class="w-10 h-10 rounded-full bg-primary text-white 
                       flex items-center justify-center 
-                      flex-shrink-0 leading-none text-xl">
+                      flex-shrink-0 leading-none text-xl"
+                      role="img" aria-label="utilisateur">
                     😊
                   </div>
                   <p class="opacity-80">
@@ -77,18 +82,20 @@
                 <div class="flex items-start gap-3">
                  <div class="w-10 h-10 rounded-full bg-primary text-white 
                       flex items-center justify-center 
-                      flex-shrink-0 leading-none text-xl">
+                      flex-shrink-0 leading-none text-xl"
+                      role="img" aria-label="assistant empathique">
                        🤗
                 </div>
                   <p class="opacity-80 pl-2">
-                    Je comprends… Trouvons ensemble des moyens de faire face à cela 💙
+                    Je comprends… Trouvons ensemble des moyens de faire face à cela
+                    <span role="img" aria-label="coeur bleu">💙</span>
                   </p>
                 </div>
               </div>
 
               <!-- typing -->
               <div class="flex items-center gap-2 px-4 py-3">
-                <div class="flex gap-1.5">
+                <div class="flex gap-1.5" aria-hidden="true">
                   <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
                   <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse delay-150"></span>
                   <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse delay-300"></span>
@@ -99,8 +106,8 @@
           </div>
 
           <!-- декор -->
-          <div class="absolute -top-4 -right-4 text-6xl">🌸</div>
-          <div class="absolute -bottom-4 -left-4 text-5xl">💫</div>
+          <div class="absolute -top-4 -right-4 text-6xl" aria-hidden="true">🌸</div>
+          <div class="absolute -bottom-4 -left-4 text-5xl" aria-hidden="true">💫</div>
         </div>
 
       </div>

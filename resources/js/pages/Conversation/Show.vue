@@ -9,6 +9,7 @@ import { ArrowUp } from 'lucide-vue-next'
 import { useStream } from '@laravel/stream-vue'
 import { router } from '@inertiajs/vue3'
 import ConversationLayout from './layouts/ConversationLayout.vue'
+import { useHead } from '@vueuse/head'
 
 const streamingAssistantMessage = ref(null)
 const props = defineProps({
@@ -18,6 +19,7 @@ const props = defineProps({
   conversation: Object,
   error: String,
   conversations: { type: Array, default: () => [] },
+  meta: Object
 })
 
 const form = useForm({
@@ -113,19 +115,33 @@ const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream',
 
 const isStreamingMessage = (msg) => msg.isStreaming 
 
+
+useHead({
+  title: props.meta?.title ?? 'PsyBot',
+  meta: [
+    { name: 'robots',content: 'noindex, nofollow'},
+    { name: 'description', content: props.meta?.description ?? '' },
+    { property: 'og:title', content: props.meta?.title ?? 'PsyBot' },
+    { property: 'og:description', content: props.meta?.description ?? '' },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary_large_image' }
+  ]
+})
 </script>
 
 <template>
   <ConversationLayout :conversations="conversations">
-    <div class="max-w-6xl mx-auto px-4 pb-32 overflow-hidden  pt-43 lg:pt-27">
-      <div v-if="props.error" class="p-3 bg-red-200 text-red-800 rounded">
+    <main class="max-w-6xl mx-auto px-4 pb-32 overflow-hidden  pt-43 lg:pt-27">
+      <h1 id="chat-title" class="sr-only">Zone de conversation</h1>
+      <div v-if="props.error" class="p-3 bg-red-200 text-red-800 rounded" role="alert">
         {{ props.error }}
       </div>
 
       <form @submit.prevent="changeModel">
+        <label id="model-select-label" class="sr-only">Sélectionner un modèle IA</label>
         <input type="hidden" v-model="form.selected_model" name="selected_model">
         <input type="hidden" :value="props.conversation.id" name="conversation_id">
-        <select v-model="form.selected_model" @change="changeModel" class='w-50 focus:outline-none'>
+        <select v-model="form.selected_model" @change="changeModel" class='w-50 focus:outline-none' aria-label="Sélectionner un modèle IA">
           <option v-for="m in props.models" :key="m.id" :value="m.id">{{ m.name }}</option>
         </select>
       </form>
@@ -133,27 +149,46 @@ const isStreamingMessage = (msg) => msg.isStreaming
       <hr>
 
       <!-- Сообщения -->
-      <div ref="messagesContainer" class=" messages overflow-y-auto max-h-[70vh] max-w-[100vw] space-y-4 scroll-smooth">
-        <div v-for="msg in localMessages" :key="msg.id" class="chat-message" :class="{ assistant: msg.role === 'assistant' }">
+      <section 
+      ref="messagesContainer" 
+      class=" messages overflow-y-auto max-h-[70vh] max-w-[100vw] space-y-4 scroll-smooth"
+      aria-label="Historique des messages"
+      role="list">
+        <article v-for="msg in localMessages" 
+                 :key="msg.id" 
+                 class="chat-message" 
+                 :class="{ assistant: msg.role === 'assistant' }"
+                 role="listitem"
+                 :aria-label="msg.role === 'assistant' ? 'Message de l’assistant' : 'Votre message'">
           <div class="avatar">
-            <span v-if="msg.role === 'assistant'">🤗</span>
-            <span v-else>😊</span>
+            <span v-if="msg.role === 'assistant'" 
+                  role="img" 
+                  aria-label="assistant empathique">
+                  🤗
+            </span>
+            <span v-else 
+            role="img" 
+            aria-label="vous"> 
+            😊
+            </span>
           </div>
+
           <div class="content">
             <div class="author">{{ msg.role === 'assistant' ? '💭 Votre assistant' : '✨ Vous' }}</div>
             <div class="text prose prose-sm">
               <div v-html="md.render(msg.content)" />
-              <div v-if="msg.isStreaming" class="typing"><span></span><span></span><span></span></div>
+              <div v-if="msg.isStreaming" class="typing" aria-hidden="true"><span></span><span></span><span></span></div>
             </div>
           </div>
-        </div>
-      </div>
+        </article>
+      </section>
 
       <div class="chat-input">
-        <textarea v-model="form.message" @keydown.enter.prevent="submit" placeholder="Pose ta question..." />
-        <button @click="submit" :disabled="form.processing || !form.message.trim()" class='cursor-pointer'>➤</button>
+        <label for="chat-message" class="sr-only">Votre message</label>
+        <textarea id="chat-message" v-model="form.message" @keydown.enter.prevent="submit" placeholder="Pose ta question..." aria-label="Saisir votre message" />
+        <button @click="submit" :disabled="form.processing || !form.message.trim()" class='cursor-pointer' aria-label="Envoyer le message">➤</button>
       </div>
-    </div>
+    </main>
   </ConversationLayout>
 </template>
 

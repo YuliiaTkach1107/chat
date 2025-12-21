@@ -1,8 +1,11 @@
 <template>
 <section id="features" class="px-4 py-20 bg-gradient-to-b from-background to-secondary/20" aria-labelledby="features-title">
   <div class="max-w-6xl mx-auto">
+
     <header class="text-center mb-16">
-      <h2 id='features-title' class="text-3xl sm:text-4xl font-semibold mb-4">Pourquoi choisir PsyBot ? 🌟</h2>
+      <h2 id='features-title' class="text-3xl sm:text-4xl font-semibold mb-4">Pourquoi choisir PsyBot ? 
+        <span role="img" aria-label="étoile brillante">🌟</span>
+      </h2>
       <p class="opacity-70 max-w-2xl mx-auto leading-relaxed">
         Un espace sûr et bienveillant pour parler librement et trouver du soutien
       </p>
@@ -13,15 +16,20 @@
       <article
        v-for="(feature, index) in features" 
        :key="index" 
-       class="group bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all">
+       tabindex="0"
+       class="group bg-card border border-border rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all"
+              :aria-label="feature.title">
         <div class="mb-4">
           <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <span class="text-3xl">{{ feature.emoji }}</span>
+            <span class="text-3xl" role="img" :aria-label="feature.title">{{ feature.emoji }}</span>
           </div>
         </div>
+
         <h3 class="text-lg font-medium mb-2">{{ feature.title }}</h3>
+
         <p class="opacity-70 leading-relaxed">{{ feature.text }}</p>
       </article>
+      
     </div>
   </div>
 </section>

@@ -8,37 +8,29 @@
 
     <!-- Main content -->
     <main id="main-content" role="main">
-
       <section aria-labelledby="features-title">
         <Features />
       </section>
-
       <section aria-labelledby="pricing-title">
         <Pricing />
       </section>
-
       <section aria-labelledby="testimonials-title">
         <Testimonials />
       </section>
-
       <section aria-labelledby="faq-title">
         <FAQ />
       </section>
-
       <section aria-labelledby="about-title">
         <About />
       </section>
-
     </main>
-
+    
     <!-- Footer -->
     <footer role="contentinfo">
       <Footer />
     </footer>
-
     <!-- RGPD -->
     <CookieBanner />
-
   </div>
 </template>
 

@@ -9,7 +9,8 @@
           </div>
 
           <h2  id="about-title" class="mb-6 text-4xl font-bold" >
-            Nous créons un espace sûr pour votre esprit 💛
+            Nous créons un espace sûr pour votre esprit 
+            <span role="img" aria-label="coeur jaune">💛</span>
           </h2>
 
           <p class="opacity-80 leading-relaxed mb-6">
@@ -25,7 +26,7 @@
           <div class="space-y-4">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
-                ❤️
+                <span role="img" aria-label="coeur">❤️</span>
               </div>
               <div class="flex-1">
                 <h4 class="mb-2 font-semibold">Empathie</h4>
@@ -37,7 +38,7 @@
 
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
-                👥
+                <span role="img" aria-label="groupe de personnes">👥</span>
               </div>
               <div class="flex-1">
                 <h4 class="mb-2 font-semibold">Accessibilité</h4>
@@ -49,7 +50,7 @@
 
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
-                🎯
+                <span role="img" aria-label="cible">🎯</span>
               </div>
               <div class="flex-1">
                 <h4 class="mb-2 font-semibold">Qualité</h4>
@@ -64,41 +65,45 @@
         <!-- Правая часть: статистика -->
         <div class="fade-in-right relative">
           <div class="grid grid-cols-2 gap-4">
-            <div class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center">
-              <div class="text-4xl mb-2">🌟</div>
+            <article class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center"
+                     aria-label="Plus de dix mille utilisateurs">
+              <div class="text-4xl mb-2" role="img" aria-label="étoile">🌟</div>
               <div class="text-3xl font-bold text-primary mb-1">10,000+</div>
               <div class="opacity-70">Utilisateurs</div>
-            </div>
+            </article>
 
-            <div class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center">
-              <div class="text-4xl mb-2">💬</div>
+            <article class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center"
+                     aria-label="Plus de cinquante mille conversations">
+              <div class="text-4xl mb-2" role="img" aria-label="bulle de discussion">💬</div>
               <div class="text-3xl font-bold text-primary mb-1">50,000+</div>
               <div class="opacity-70">Conversations</div>
-            </div>
+            </article>
 
-            <div class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center">
-              <div class="text-4xl mb-2">⭐</div>
+            <article class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center"
+                     aria-label="Note moyenne de 4.9 sur 5">
+              <div class="text-4xl mb-2" role="img" aria-label="étoile">⭐</div>
               <div class="text-3xl font-bold text-primary mb-1">4.9/5</div>
               <div class="opacity-70">Note</div>
-            </div>
+            </article>
 
-            <div class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center">
-              <div class="text-4xl mb-2">🌍</div>
+            <article class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center"
+                     aria-label="Présent dans plus de quinze pays">
+              <div class="text-4xl mb-2" role="img" aria-label="globe">🌍</div>
               <div class="text-3xl font-bold text-primary mb-1">15+</div>
               <div class="opacity-70">Pays</div>
-            </div>
+            </article>
           </div>
 
           <!-- Анимационные элементы -->
-          <div class="absolute -top-8 -right-8 text-6xl animate-bounce-slow">🦋</div>
-          <div class="absolute -bottom-8 -left-8 text-5xl animate-bounce-slow-delay">🌸</div>
+          <div class="absolute -top-8 -right-8 text-6xl animate-bounce-slow" aria-hidden="true">🦋</div>
+          <div class="absolute -bottom-8 -left-8 text-5xl animate-bounce-slow-delay" aria-hidden="true">🌸</div>
         </div>
       </div>
 
       <!-- Блок подвала -->
       <div class="mt-16 bg-gradient-to-r from-primary/10 via-accent/20 to-primary/10 border border-primary/20 rounded-3xl p-8 text-center">
         <p class="opacity-80 leading-relaxed max-w-3xl mx-auto">
-          <span class="text-3xl mr-3">💙</span>
+          <span class="text-3xl mr-3" role="img" aria-label="coeur bleu">💙</span>
           Nous nous améliorons continuellement pour vous offrir le meilleur soutien.
           Vos retours nous aident à devenir meilleurs.
         </p>
@@ -106,8 +111,6 @@
     </div>
   </section>
 </template>
-
-<script setup></script>
 
 <style scoped>
 .fade-in-left {

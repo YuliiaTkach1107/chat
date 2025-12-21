@@ -5,11 +5,14 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { initializeTheme } from './composables/useAppearance';
+import { createHead } from '@vueuse/head';
 
 
 
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+const head = createHead();
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -19,11 +22,13 @@ createInertiaApp({
             import.meta.glob<DefineComponent>('./pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .mount(el);
+        const vueApp = createApp({ render: () => h(App, props) });
+        
+        vueApp.use(plugin);
+        vueApp.use(head); // ← подключаем head провайдер
+
+        vueApp.mount(el);
     },
-    
          progress: false
 });
 

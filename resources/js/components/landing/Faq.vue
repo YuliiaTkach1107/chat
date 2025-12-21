@@ -4,7 +4,9 @@
       <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-4">
         <span class="opacity-80">FAQ</span>
       </div>
-      <h2 id="faq-title" class="text-3xl font-bold mb-4">Questions fréquentes 💭</h2>
+      <h2 id="faq-title" class="text-3xl font-bold mb-4">Questions fréquentes
+        <span role="img" aria-label="bulle de réflexion">💭</span>
+      </h2>
       <p class="opacity-70 leading-relaxed">
         Réponses aux questions les plus populaires sur notre service
       </p>
@@ -16,6 +18,7 @@
         :key="index"
         class="bg-white border border-border rounded-2xl shadow-sm overflow-hidden transition-all hover:shadow-md"
       >
+      <h3>
         <!-- Question -->
         <button
           @click="toggleFAQ(index)"
@@ -23,6 +26,7 @@
           :aria-expanded="openIndex === index"
           :aria-controls="`faq-answer-${index}`"
         >
+        
           <span class="font-medium">{{ faq.question }}</span>
           <div class="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center"
           >
@@ -30,6 +34,7 @@
             <span v-else>+</span>
           </div>
         </button>
+        </h3>
 
         <!-- Réponse -->
         <div
@@ -37,6 +42,7 @@
           :style="{ maxHeight: openIndex === index ? '500px' : '0', opacity: openIndex === index ? 1 : 0 }"
           :id="`faq-answer-${index}`"
           role="region"
+          :aria-labelledby="`faq-question-${index}`"
         >
           <p class="opacity-80 leading-relaxed mb-3 mt-3">{{ faq.answer }}</p>
         </div>
@@ -46,7 +52,7 @@
     <!-- Contact -->
     <div class="mt-12 text-center bg-gradient-to-r from-accent/60 to-primary/10 border border-primary/20 rounded-2xl p-6 fade-in">
       <p class="opacity-80">
-        <span class="text-2xl mr-2">💬</span>
+        <span class="text-2xl mr-2" role="img" aria-label="bulle de discussion">💬</span>
         Vous n'avez pas trouvé de réponse ? Écrivez-nous à
         <a href="mailto:support@psybot.com" class="text-primary hover:underline">support@psybot.com</a>
       </p>

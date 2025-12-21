@@ -1,15 +1,16 @@
 <template>
   <div class="flex-1 flex flex-col">
+
     <!-- Header -->
-    <header class="fixed top-0 left-0 w-full border-b border-border bg-card px-4 py-4 sm:px-6 md:px-8 lg:px-6 z-50">
+    <header class="fixed top-0 left-0 w-full border-b border-border bg-card px-4 py-4 sm:px-6 md:px-8 lg:px-6 z-50" role="banner">
       <div class="max-w-7xl flex flex-col sm:flex-row items-center sm:justify-around gap-4 sm:gap-6 lg:flex-row lg:gap-10 sm:m-auto">
         <!-- Навигация -->
-        <nav class="flex gap-4 sm:gap-6 w-full sm:w-auto justify-center sm:justify-start lg:justify-start">
-          <Link :href="route('personnalisation.index')" class="font-semibold text-primary">
-            <Settings class="w-5 h-5 sm:w-6 sm:h-6 lg:w-6 lg:h-6 text-primary sm:ml-15" />
+        <nav class="flex gap-4 sm:gap-6 w-full sm:w-auto justify-center sm:justify-start lg:justify-start" aria-label="Menu principal">
+          <Link :href="route('personnalisation.index')" class="font-semibold text-primary" aria-label="Ouvrir les paramètres">
+            <Settings class="w-5 h-5 sm:w-6 sm:h-6 lg:w-6 lg:h-6 text-primary sm:ml-15" aria-hidden="true" />
           </Link>
-          <Link :href="route('landing')" class="font-semibold text-primary">
-            <Home class="w-5 h-5 sm:w-6 sm:h-6 lg:w-6 lg:h-6 text-primary" />
+          <Link :href="route('landing')" class="font-semibold text-primary" aria-label="Retour à la page d'accueil">
+            <Home class="w-5 h-5 sm:w-6 sm:h-6 lg:w-6 lg:h-6 text-primary" aria-hidden="true" />
           </Link>
         </nav>
 
@@ -22,8 +23,8 @@
             Un espace sûr pour la conversation
           </p>
         </div>
-       <button @click="logout" class="btn-logout hover:cursor-pointer">
-            <LogOut class="w-5 h-5 sm:w-6 sm:h-6 lg:w-6 lg:h-6 text-primary" /> 
+       <button @click="logout" class="btn-logout hover:cursor-pointer" aria-label="Se déconnecter">
+            <LogOut class="w-5 h-5 sm:w-6 sm:h-6 lg:w-6 lg:h-6 text-primary" aria-hidden="true" /> 
           </button>
       </div>
     </header>
@@ -39,7 +40,7 @@ import { Settings, Home, LogOut  } from 'lucide-vue-next'
 import { router } from '@inertiajs/vue3'
 
 const logout = () => {
-  if (confirm('Вы точно хотите выйти?')) {
+  if (confirm('Voulez-vous vraiment vous déconnecter?')) {
     router.post(route('logout'))
   }
 }
