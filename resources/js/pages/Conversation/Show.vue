@@ -133,7 +133,7 @@ const isStreamingMessage = (msg) => msg.isStreaming
       <hr>
 
       <!-- Сообщения -->
-      <div ref="messagesContainer" class="overflow-y-auto max-h-[70vh] max-w-[100vw] space-y-4 scroll-smooth">
+      <div ref="messagesContainer" class=" messages overflow-y-auto max-h-[70vh] max-w-[100vw] space-y-4 scroll-smooth">
         <div v-for="msg in localMessages" :key="msg.id" class="chat-message" :class="{ assistant: msg.role === 'assistant' }">
           <div class="avatar">
             <span v-if="msg.role === 'assistant'">🤗</span>
@@ -156,11 +156,6 @@ const isStreamingMessage = (msg) => msg.isStreaming
     </div>
   </ConversationLayout>
 </template>
-
-<style scoped>
-/* остальной CSS оставил без изменений */
-</style>
-
 
 <style scoped>
 /* ===== Chat message (как в Figma / React) ===== */
@@ -276,6 +271,11 @@ const isStreamingMessage = (msg) => msg.isStreaming
     bottom: 16px;     /* от нижнего края */
     top: auto;        /* не фиксируем сверху */
     width: auto; 
+
   }
+  .messages{
+    padding-bottom:50px;
+  }
+  
 }
 </style>
