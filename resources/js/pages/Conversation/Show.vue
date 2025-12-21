@@ -112,6 +112,7 @@ const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream',
 })
 
 const isStreamingMessage = (msg) => msg.isStreaming 
+
 </script>
 
 <template>
@@ -149,7 +150,7 @@ const isStreamingMessage = (msg) => msg.isStreaming
       </div>
 
       <div class="chat-input">
-        <textarea v-model="form.message" placeholder="Pose ta question..." />
+        <textarea v-model="form.message" @keydown.enter.prevent="submit" placeholder="Pose ta question..." />
         <button @click="submit" :disabled="form.processing || !form.message.trim()" class='cursor-pointer'>➤</button>
       </div>
     </div>

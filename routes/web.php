@@ -24,6 +24,8 @@ Route::delete('/chat/{conversation}',[ConversationController::class,'destroy'])-
 Route::put('/chat/{conversation}', [ConversationController::class, 'update'])->name('conversation.update');
 });
 
+Route::post('/logout', [\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
 
 
 Route::middleware(['auth'])->group(function() {

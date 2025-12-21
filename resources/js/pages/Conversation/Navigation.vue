@@ -2,8 +2,7 @@
   <div class="flex-1 flex flex-col">
     <!-- Header -->
     <header class="fixed top-0 left-0 w-full border-b border-border bg-card px-4 py-4 sm:px-6 md:px-8 lg:px-6 z-50">
-      <div class="max-w-7xl flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 lg:flex-row lg:gap-10 sm:m-auto">
-        
+      <div class="max-w-7xl flex flex-col sm:flex-row items-center sm:justify-around gap-4 sm:gap-6 lg:flex-row lg:gap-10 sm:m-auto">
         <!-- Навигация -->
         <nav class="flex gap-4 sm:gap-6 w-full sm:w-auto justify-center sm:justify-start lg:justify-start">
           <Link :href="route('personnalisation.index')" class="font-semibold text-primary">
@@ -23,7 +22,9 @@
             Un espace sûr pour la conversation
           </p>
         </div>
-
+       <button @click="logout" class="btn-logout hover:cursor-pointer">
+            <LogOut class="w-5 h-5 sm:w-6 sm:h-6 lg:w-6 lg:h-6 text-primary" /> 
+          </button>
       </div>
     </header>
   </div>
@@ -34,7 +35,14 @@ import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/vue3'
 import { route } from 'ziggy-js'
-import { Settings, Home } from 'lucide-vue-next'
+import { Settings, Home, LogOut  } from 'lucide-vue-next'
+import { router } from '@inertiajs/vue3'
+
+const logout = () => {
+  if (confirm('Вы точно хотите выйти?')) {
+    router.post(route('logout'))
+  }
+}
 
 const props = defineProps({
   models: Array,
