@@ -36,6 +36,7 @@
         "@laravel/stream-vue": "^0.3.10",
         "@tailwindcss/typography": "^0.5.19",
         "@vueuse/core": "^12.8.2",
+        "@vueuse/head": "^2.0.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "highlight.js": "^11.11.1",

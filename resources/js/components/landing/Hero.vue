@@ -1,5 +1,5 @@
 <template>
-  <section class="relative overflow-hidden px-4 py-20 lg:py-32">
+  <section class="relative overflow-hidden px-4 py-20 lg:py-32"  aria-labelledby="hero-title">
     <!-- Background gradient -->
     <div class="absolute inset-0 bg-gradient-to-br from-accent/40 via-background to-secondary/30 -z-10"></div>
 
@@ -13,8 +13,8 @@
             <span class="opacity-80">Votre assistant personnel</span>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
-            Un soutien psychologique,
+          <h1 id="hero-title" class="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
+              Un soutien psychologique,
             <span class="block text-primary mt-2">
               quand vous en avez besoin 💛
             </span>
@@ -31,6 +31,7 @@
             class="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground 
                    px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all
                    flex items-center gap-2 cursor-pointer"
+                   aria-label="Commencer une conversation avec PsyBot"
           >
             💬 Commencer la conversation
           </button>
@@ -38,15 +39,15 @@
           <!-- Иконки -->
           <div class="mt-10 flex flex-wrap gap-6 opacity-70">
             <div class="flex items-center gap-2">
-              <span class="text-2xl">🔒</span>
+              <span class="text-2xl" aria-hidden="true">🔒</span>
               <span>Confidentiel</span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-2xl">🤗</span>
+              <span class="text-2xl" aria-hidden="true">🤗</span>
               <span>Sans jugement</span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-2xl">🌟</span>
+              <span class="text-2xl" aria-hidden="true">🌟</span>
               <span>24h/24 et 7j/7</span>
             </div>
           </div>

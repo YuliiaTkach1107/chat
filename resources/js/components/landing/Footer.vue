@@ -4,6 +4,7 @@
       <div class="grid md:grid-cols-4 gap-8 mb-8">
         <!-- About -->
         <div>
+          <h2 class="sr-only">Pied de page</h2>
           <div class="flex items-center gap-2 mb-4">
             <span class="w-6 h-6 text-primary">❤️</span>
             <h3>PsyBot</h3>
@@ -71,22 +72,28 @@
         </div>
       </div>
 
-      <div class="pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex flex-col">
-        <p class="opacity-60">
-          © 2025 PsyBot. Tous droits réservés. Fait avec 💛
-          <Link :href="route('legal.mentions')" class="underline hover:text-primary transition-colors">Mentions légales </Link> | 
-          <Link :href="route('legal.privacy')" class="underline hover:text-primary transition-colors">Politique de confidentialité </Link>
-          <span title="AI Act Transparency 👁️">👁️</span>
-        </p>
-        <p class="opacity-60 w-200 pt-4">Vous interagissez avec une IA. Les réponses peuvent comporter des erreurs et ne remplacent pas un professionnel.
-           <Link :href="route('legal.ai-act')" class="underline hover:text-primary transition-colors">En savoir plus</Link></p>
+      <div class="pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+  <!-- Левая часть -->
+  <div class="flex flex-col w-full md:w-auto">
+    <p class="opacity-60 text-sm">
+      © 2025 PsyBot. Tous droits réservés. Fait avec 💛
+      </p>
+      <p class="opacity-60 text-sm">
+      <Link :href="route('legal.mentions')" class="underline hover:text-primary transition-colors">Mentions légales</Link> | 
+      <Link :href="route('legal.privacy')" class="underline hover:text-primary transition-colors">Politique de confidentialité</Link>
+      <span title="AI Act Transparency 👁️"></span></p>
+    <p class="opacity-60 text-sm pt-4">
+      Vous interagissez avec une IA. Les réponses peuvent comporter des erreurs et ne remplacent pas un professionnel.
+      <Link :href="route('legal.ai-act')" class="underline hover:text-primary transition-colors">En savoir plus</Link>
+    </p>
+  </div>
+
+  <!-- Правая часть -->
+  <div class="flex items-center gap-2 opacity-60 mt-4 md:mt-0 w-full md:w-auto">
+    💬
+    <span class="text-sm">Disponible 24/7 pour votre soutien</span>
+  </div>
 </div>
-        <div class="flex items-center gap-2 opacity-60">
-          💬
-          <span>Disponible 24/7 pour votre soutien</span>
-        </div>
-      </div>
     </div>
   </footer>
 </template>

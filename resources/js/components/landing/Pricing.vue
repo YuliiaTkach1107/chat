@@ -1,12 +1,12 @@
 <template>
-  <section class="px-4 py-20 bg-gradient-to-b from-background to-secondary/20">
+  <section id="tarifs" class="px-4 py-20 bg-gradient-to-b from-background to-secondary/20"  aria-labelledby="pricing-title">
     <div class="max-w-6xl mx-auto">
       <!-- Заголовок -->
       <div class="text-center mb-16 fade-in">
         <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-4">
           <span class="opacity-80">Tarifs</span>
         </div>
-        <h2 class="mb-4" id='tarifs'>Choisissez votre plan 💛</h2>
+        <h2 id="pricing-title" class="mb-4">Choisissez votre plan 💛</h2>
         <p class="opacity-70 max-w-2xl mx-auto leading-relaxed">
           Commencez par le plan gratuit ou choisissez une formule avec plus de fonctionnalités
         </p>
@@ -56,6 +56,7 @@
 
           <button
             class="w-full py-4 rounded-full transition-all text-white bg-gradient-to-r from-primary to-primary/80 shadow-lg hover:shadow-xl"
+            :aria-label="`Choisir le plan ${plan.name}`"
           >
             {{ plan.price === 'Gratuit' ? 'Commencer gratuitement' : 'Choisir ce plan' }}
           </button>

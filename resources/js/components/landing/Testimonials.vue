@@ -1,12 +1,12 @@
 <template>
-  <section class="px-4 py-20 bg-gradient-to-b from-secondary/20 to-background">
+  <section id="testimonials" class="px-4 py-20 bg-gradient-to-b from-secondary/20 to-background" aria-labelledby="testimonials-title">
     <div class="max-w-6xl mx-auto">
       <!-- Заголовок -->
       <div class="text-center mb-16 fade-in">
         <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-4">
           <span class="opacity-80">Témoignages</span>
         </div>
-        <h2 class="mb-4" id='testimonials'>Ce que disent nos utilisateurs 💬</h2>
+        <h2 class="mb-4" id="testimonials-title">Ce que disent nos utilisateurs 💬</h2>
         <p class="opacity-70 max-w-2xl mx-auto leading-relaxed">
           Histoires de personnes qui ont trouvé soutien et compréhension
         </p>

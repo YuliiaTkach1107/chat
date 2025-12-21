@@ -1,13 +1,44 @@
 <template>
   <div class="landing-page font-sans">
-    <Hero />
-    <Features />
-    <Pricing />
-    <Testimonials />
-    <FAQ />
-    <About />
-    <Footer />
-     <CookieBanner />
+
+    <!-- Header (SEO + accessibilité) -->
+    <header role="banner">
+      <Hero />
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content" role="main">
+
+      <section aria-labelledby="features-title">
+        <Features />
+      </section>
+
+      <section aria-labelledby="pricing-title">
+        <Pricing />
+      </section>
+
+      <section aria-labelledby="testimonials-title">
+        <Testimonials />
+      </section>
+
+      <section aria-labelledby="faq-title">
+        <FAQ />
+      </section>
+
+      <section aria-labelledby="about-title">
+        <About />
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+      <Footer />
+    </footer>
+
+    <!-- RGPD -->
+    <CookieBanner />
+
   </div>
 </template>
 
@@ -20,6 +51,43 @@ import FAQ from '@/Components/landing/Faq.vue'
 import About from '@/Components/landing/About.vue'
 import Footer from '@/Components/landing/Footer.vue'
 import CookieBanner from '@/Components/CookieBanner.vue'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'PsyBot — Soutien psychologique en ligne 24/7',
+  meta: [
+    { name: 'description', content: 'PsyBot offre un espace sûr pour parler de vos émotions et obtenir un soutien psychologique accessible à tous, à tout moment.' },
+    
+    // Open Graph
+    { property: 'og:title', content: 'PsyBot — Soutien psychologique en ligne 24/7' },
+    { property: 'og:description', content: 'Un espace sûr pour parler de vos émotions et obtenir un soutien psychologique accessible à tous, à tout moment.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://votresite.com/' },
+    { property: 'og:image', content: 'https://votresite.com/preview.jpg' },
+
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'PsyBot — Soutien psychologique en ligne 24/7' },
+    { name: 'twitter:description', content: 'Un espace sûr pour parler de vos émotions et obtenir un soutien psychologique accessible à tous, à tout moment.' },
+    { name: 'twitter:image', content: 'https://votresite.com/preview.jpg' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "PsyBot",
+        "url": "https://votresite.com/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://votresite.com/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      })
+    }
+  ]
+})
 </script>
 
 <style scoped>

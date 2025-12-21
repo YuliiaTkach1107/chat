@@ -1,17 +1,17 @@
 <template>
-  <section class="faq py-20 ">
+  <section id="faq" class="faq py-20" aria-labelledby="faq-title">
     <div class="max-w-3xl mx-auto text-center mb-16 fade-in">
       <div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-4">
         <span class="opacity-80">FAQ</span>
       </div>
-      <h2 class="text-3xl font-bold mb-4" id='faq'>Questions fréquentes 💭</h2>
+      <h2 id="faq-title" class="text-3xl font-bold mb-4">Questions fréquentes 💭</h2>
       <p class="opacity-70 leading-relaxed">
         Réponses aux questions les plus populaires sur notre service
       </p>
     </div>
 
     <div class="max-w-3xl mx-auto space-y-4">
-      <div
+      <article
         v-for="(faq, index) in faqs"
         :key="index"
         class="bg-white border border-border rounded-2xl shadow-sm overflow-hidden transition-all hover:shadow-md"
@@ -20,9 +20,12 @@
         <button
           @click="toggleFAQ(index)"
           class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-primary/2 transition-colors"
+          :aria-expanded="openIndex === index"
+          :aria-controls="`faq-answer-${index}`"
         >
           <span class="font-medium">{{ faq.question }}</span>
-          <div class="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
+          <div class="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center"
+          >
             <span v-if="openIndex === index">−</span>
             <span v-else>+</span>
           </div>
@@ -32,10 +35,12 @@
         <div
           class="px-6 overflow-hidden transition-all duration-300"
           :style="{ maxHeight: openIndex === index ? '500px' : '0', opacity: openIndex === index ? 1 : 0 }"
+          :id="`faq-answer-${index}`"
+          role="region"
         >
           <p class="opacity-80 leading-relaxed mb-3 mt-3">{{ faq.answer }}</p>
         </div>
-      </div>
+      </article>
     </div>
 
     <!-- Contact -->

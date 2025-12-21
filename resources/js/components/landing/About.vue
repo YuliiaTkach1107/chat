@@ -1,5 +1,5 @@
 <template>
-  <section class="px-4 py-20 bg-gradient-to-b from-background to-secondary/20">
+  <section id="about" class="px-4 py-20 bg-gradient-to-b from-background to-secondary/20" aria-labelledby="about-title">
     <div class="max-w-6xl mx-auto">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <!-- Левая часть: контент -->
@@ -8,7 +8,7 @@
             <span class="opacity-80">À propos</span>
           </div>
 
-          <h2 class="mb-6 text-4xl font-bold" id="about">
+          <h2  id="about-title" class="mb-6 text-4xl font-bold" >
             Nous créons un espace sûr pour votre esprit 💛
           </h2>
 
