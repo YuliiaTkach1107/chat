@@ -65,20 +65,23 @@
               <a href="#faq" class="hover:text-primary transition-colors">Centre d'aide</a>
             </li>
             <li>
-              <a href="#privacy" class="hover:text-primary transition-colors">Politique de confidentialité</a>
-            </li>
-            <li>
-              <a href="#terms" class="hover:text-primary transition-colors">Conditions d'utilisation</a>
+              <Link :href="route('legal.terms')" class="hover:text-primary transition-colors">Conditions d'utilisation </Link>
             </li>
           </ul>
         </div>
       </div>
 
       <div class="pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex flex-col">
         <p class="opacity-60">
           © 2025 PsyBot. Tous droits réservés. Fait avec 💛
+          <Link :href="route('legal.mentions')" class="underline hover:text-primary transition-colors">Mentions légales </Link> | 
+          <Link :href="route('legal.privacy')" class="underline hover:text-primary transition-colors">Politique de confidentialité </Link>
+          <span title="AI Act Transparency 👁️">👁️</span>
         </p>
-
+        <p class="opacity-60 w-200 pt-4">Vous interagissez avec une IA. Les réponses peuvent comporter des erreurs et ne remplacent pas un professionnel.
+           <Link :href="route('legal.ai-act')" class="underline hover:text-primary transition-colors">En savoir plus</Link></p>
+</div>
         <div class="flex items-center gap-2 opacity-60">
           💬
           <span>Disponible 24/7 pour votre soutien</span>
@@ -88,5 +91,8 @@
   </footer>
 </template>
 
-<script setup></script>
+<script setup>
+import {Link} from '@inertiajs/vue3'
+import { route } from 'ziggy-js'
+</script>
 

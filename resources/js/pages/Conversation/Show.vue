@@ -117,7 +117,7 @@ const isStreamingMessage = (msg) => msg.isStreaming
 
 <template>
   <ConversationLayout :conversations="conversations">
-    <div class="max-w-6xl mx-auto px-4 pb-32 overflow-hidden  pt-37 lg:pt-27">
+    <div class="max-w-6xl mx-auto px-4 pb-32 overflow-hidden  pt-43 lg:pt-27">
       <div v-if="props.error" class="p-3 bg-red-200 text-red-800 rounded">
         {{ props.error }}
       </div>
@@ -172,7 +172,7 @@ const isStreamingMessage = (msg) => msg.isStreaming
 }
 
 .chat-message.assistant {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgb(232, 168, 124, 0.1);
 }
 .avatar {
   width: 40px;
@@ -183,11 +183,12 @@ const isStreamingMessage = (msg) => msg.isStreaming
   justify-content: center;
   box-shadow: 0 2px 6px rgba(0,0,0,.1);
   font-size: 20px;
-  background: linear-gradient(135deg, #E8A87C, #e8a87ccc);
+  background: linear-gradient(135deg, #fae2d3, #e6c9b5cc);
 }
 
 .chat-message:not(.assistant) .avatar {
-  background: linear-gradient(135deg, #A8DADC, #8ecae6);
+  background: linear-gradient(135deg, #E8A87C, #e8a87ccc);
+  
 }
 
 .content {

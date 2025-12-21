@@ -7,8 +7,7 @@ use App\Http\Controllers\AskController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PersonnalisationController;
-use App\Http\Controllers\LandingController;
-
+use App\Http\Controllers\LegalController;
 
 Route::get('/ask-stream', [\App\Http\Controllers\AskStreamController::class, 'index'])
     ->name('stream.index');
@@ -52,6 +51,12 @@ Route::get('/', function () {
     ]);
 })->name('landing');
 
+Route::get('/legal/mentions', [LegalController::class, 'mentions'])->name('legal.mentions');
+Route::get('/legal/privacy', [LegalController::class, 'privacy'])->name('legal.privacy');
+Route::get('/legal/terms', [LegalController::class, 'terms'])->name('legal.terms');
+Route::get('/legal/ai-act', function () {
+    return Inertia::render('Legal/AiAct');
+})->name('legal.ai-act');
 
 
 require __DIR__.'/settings.php';

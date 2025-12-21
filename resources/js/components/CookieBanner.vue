@@ -1,0 +1,98 @@
+<template>
+  <div v-if="!bannerHidden" class="fixed bottom-0 w-full bg-accent border border-destructive p-4 flex justify-between items-center h-30">
+    <span >Nous utilisons des cookies pour améliorer le service. 🍪</span>
+    <div class="space-x-2">
+      <button @click="acceptAll" class="px-3 py-1 bg-background border border-destructive rounded hover:cursor-pointer">Accepter</button>
+      <button @click="rejectAll" class="bg-destructive text-white px-3 py-1 rounded hover:cursor-pointer">Refuser</button>
+      <button @click="openSettings" class="underline">Paramètres</button>
+    </div>
+  </div>
+
+<!-- Модальное окно настроек -->
+  <div v-if="settingsOpen" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-background border border-destructive  p-6 rounded-lg max-w-md w-full">
+      <h2 class="text-xl font-bold mb-4">Paramètres des cookies</h2>
+      <p class="mb-4">Vous pouvez modifier vos préférences concernant les cookies :</p>
+
+      <div class="mb-4">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" v-model="functionalCookies" />
+          Cookies fonctionnels (nécessaires au fonctionnement du site)
+        </label>
+        <label class="flex items-center gap-2 mt-2">
+          <input type="checkbox" v-model="analyticsCookies" />
+          Cookies analytiques (pour améliorer le service)
+        </label>
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button @click="saveSettings" class="bg-destructive text-white px-4 py-2 rounded hover:bg-destructive/80">Sauvegarder</button>
+        <button @click="closeSettings" class="px-4 py-2 rounded border border-destructive">Annuler</button>
+      </div>
+    </div>
+    </div>
+
+
+
+</template>
+
+<script setup>
+import { ref,watch } from 'vue'
+
+// Состояние баннера
+const bannerHidden = ref(localStorage.getItem('cookies_banner') === 'accepted' || localStorage.getItem('cookies_banner') === 'rejected')
+
+// Настройки
+const settingsOpen = ref(false)
+const functionalCookies = ref(true) // всегда включены
+const analyticsCookies = ref(localStorage.getItem('cookies_analytics') === 'true')
+
+// Методы
+const acceptAll = () => {
+  localStorage.setItem('cookies_banner', 'accepted')
+  localStorage.setItem('cookies_analytics', 'true')
+  analyticsCookies.value = true
+  bannerHidden.value = true
+}
+
+const rejectAll = () => {
+  localStorage.setItem('cookies_banner', 'rejected')
+  localStorage.setItem('cookies_analytics', 'false')
+  analyticsCookies.value = false
+  bannerHidden.value = true
+}
+
+const openSettings = () => settingsOpen.value = true
+const closeSettings = () => settingsOpen.value = false
+
+const saveSettings = () => {
+  localStorage.setItem('cookies_analytics', analyticsCookies.value ? 'true' : 'false')
+  localStorage.setItem('cookies_banner', 'accepted')
+  bannerHidden.value = true
+  settingsOpen.value = false
+}
+
+// Автоматическое применение изменений при загрузке
+watch(analyticsCookies, (val) => {
+  // здесь можно подключить отключение/включение аналитики
+  console.log('Analytics cookies:', val)
+})
+</script>
+<style scoped>
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  position: relative;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "✔";
+  position: absolute;
+  top: 0;
+  color: #E8A87C;
+  font-size: 16px;
+}
+</style>

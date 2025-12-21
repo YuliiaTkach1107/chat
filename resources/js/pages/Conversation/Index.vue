@@ -15,7 +15,7 @@
       </template>
       <template v-else>
         <!-- Écran d'accueil si aucune conversation n'est sélectionnée -->
-  <div class="flex flex-col justify-center items-center h-screen px-4 overflow-y-auto text-center space-y-6 pb-10 pt-130 lg:pt-70">
+  <div class="flex flex-col justify-center items-center h-screen px-4 overflow-y-auto text-center space-y-6 pb-10 pt-140 lg:pt-70">
     <!-- Emoji et message de bienvenue -->
     <div class="text-6xl sm:text-7xl md:text-8xl mb-4 pt-6">🫂</div>
     <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold text-primary mb-2">
@@ -50,6 +50,7 @@
       </template>
     </div>
     </div>  
+     <AiActDisclaimer />
  </ConversationLayout>
 </template>
 
@@ -57,6 +58,7 @@
 import ConversationLayout from './layouts/ConversationLayout.vue'
 import { useForm } from '@inertiajs/vue3'
 import Show from './Show.vue'
+import AiActDisclaimer from '@/Components/AiActDisclaimer.vue'
 
 const props = defineProps({
   conversations: {
