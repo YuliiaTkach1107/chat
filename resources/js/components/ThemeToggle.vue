@@ -19,7 +19,9 @@ function toggleTheme() {
   <button
     @click="toggleTheme"
     class="p-2 rounded-full transition-colors"
-    aria-label="Toggle theme"
+    :aria-pressed="isDark"
+    :aria-label="isDark ? 'Activer le mode clair' : 'Activer le mode sombre'"
+    :title="isDark ? 'Mode clair' : 'Mode sombre'"
   >
     <!-- Светлая тема → показываем ЛУНУ -->
     <Moon v-if="!isDark" class="w-6 h-6 text-primary" />
