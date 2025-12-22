@@ -29,6 +29,7 @@
     <footer role="contentinfo">
       <Footer />
     </footer>
+     <ThemeToggle class="theme-toggle-fixed"  />
     <!-- RGPD -->
     <CookieBanner />
   </div>
@@ -44,6 +45,7 @@ import About from '@/Components/landing/About.vue'
 import Footer from '@/Components/landing/Footer.vue'
 import CookieBanner from '@/Components/CookieBanner.vue'
 import { useHead } from '@vueuse/head'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 useHead({
   title: 'PsyBot — Soutien psychologique en ligne 24/7',
@@ -90,5 +92,29 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.theme-toggle-fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 50;
+  background: var(--card);
+  border: 1px solid var(--border);
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.theme-toggle-fixed:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
 
 </style>

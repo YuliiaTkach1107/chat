@@ -16,7 +16,7 @@
       <article
         v-for="(faq, index) in faqs"
         :key="index"
-        class="bg-white border border-border rounded-2xl shadow-sm overflow-hidden transition-all hover:shadow-md"
+        class="bg-card border border-border rounded-2xl shadow-sm overflow-hidden transition-all hover:shadow-md"
       >
       <h3>
         <!-- Question -->

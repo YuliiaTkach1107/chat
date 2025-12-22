@@ -10,6 +10,7 @@ import { useStream } from '@laravel/stream-vue'
 import { router } from '@inertiajs/vue3'
 import ConversationLayout from './layouts/ConversationLayout.vue'
 import { useHead } from '@vueuse/head'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const streamingAssistantMessage = ref(null)
 const props = defineProps({
@@ -175,19 +176,19 @@ useHead({
 
           <div class="content">
             <div class="author">{{ msg.role === 'assistant' ? '💭 Votre assistant' : '✨ Vous' }}</div>
-            <div class="text prose prose-sm">
+            <div class="text prose prose-sm text-foreground">
               <div v-html="md.render(msg.content)" />
               <div v-if="msg.isStreaming" class="typing" aria-hidden="true"><span></span><span></span><span></span></div>
             </div>
           </div>
         </article>
       </section>
-
       <div class="chat-input">
         <label for="chat-message" class="sr-only">Votre message</label>
         <textarea id="chat-message" v-model="form.message" @keydown.enter.prevent="submit" placeholder="Pose ta question..." aria-label="Saisir votre message" />
         <button @click="submit" :disabled="form.processing || !form.message.trim()" class='cursor-pointer' aria-label="Envoyer le message">➤</button>
       </div>
+      <ThemeToggle class="theme-toggle-fixed"  />
     </main>
   </ConversationLayout>
 </template>
@@ -265,7 +266,7 @@ useHead({
   right: 16px;
   display: flex;
   gap: 8px;
-  background: white;
+  background: var(--card);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,.12);
   padding: 10px;
@@ -278,6 +279,8 @@ useHead({
   resize: none;
   border: none;
   outline: none; 
+  background: var(--card); 
+  color: var(--foreground);
 }
 .chat-input textarea::placeholder {
   padding-top:8px;
@@ -289,7 +292,7 @@ useHead({
   border-radius: 9999px;
   border: none;
   background: #E8A87C;
-  color: white;
+  color: var(--card);
   font-size: 18px;
 }
 .chat-input button:disabled {
@@ -297,6 +300,28 @@ useHead({
   cursor: not-allowed;
 }
 
+.theme-toggle-fixed {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  z-index: 50;
+  background: var(--card);
+  border: 1px solid var(--border);
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.theme-toggle-fixed:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
 
 /* Mobile / Tablet (≤1024px) */
 @media (max-width: 1024px) {

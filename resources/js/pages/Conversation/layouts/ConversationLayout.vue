@@ -10,7 +10,8 @@
       </div>
      <!-- Правая часть -->
       <div class="flex-1 overflow-hidden h-screen">
-        <slot /> <!-- Сюда будут рендериться Show.vue или заставка -->
+        <slot />
+      
       </div>
     </div>
   </div>
@@ -22,6 +23,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import Sidebar from '../Navigation.vue'
 import ConversationsList from '../ConversationsList.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const props = defineProps({
   conversations: { type: Array, default: () => [] },
@@ -31,4 +33,5 @@ const props = defineProps({
 </script>
 
 <style scoped>
+
 </style>

@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 import { route } from 'ziggy-js'
 import { Link } from '@inertiajs/vue3'
 import { useHead } from '@vueuse/head'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const props = defineProps({
   preferences: Object
@@ -172,6 +173,32 @@ useHead({
 
       </section>
     </div>
+    <ThemeToggle class="theme-toggle-fixed"  />
   </main>
   
 </template>
+<style scoped>
+.theme-toggle-fixed {
+  position: fixed;
+  bottom:20px;
+  right: 20px;
+  z-index: 50;
+  background: var(--card);
+  border: 1px solid var(--border);
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.theme-toggle-fixed:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+</style>
+

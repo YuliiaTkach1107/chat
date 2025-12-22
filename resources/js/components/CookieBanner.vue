@@ -83,16 +83,21 @@ input[type="checkbox"] {
   appearance: none;
   width: 20px;
   height: 20px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--border);
   border-radius: 4px;
   position: relative;
+  display: flex; /* ← добавляем */
+  align-items: center;
+  justify-content: center;
 }
 
-input[type="checkbox"]:checked::after {
-  content: "✔";
-  position: absolute;
-  top: 0;
-  color: #E8A87C;
-  font-size: 16px;
+
+input[type="checkbox"]:checked {
+  background: var(--primary);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='%23fff' stroke-width='3' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M5 13l4 4L19 7'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
 </style>
