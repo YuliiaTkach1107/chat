@@ -106,8 +106,8 @@
           </div>
 
           <!-- декор -->
-          <div class="absolute -top-4 -right-4 text-6xl" aria-hidden="true">🌸</div>
-          <div class="absolute -bottom-4 -left-4 text-5xl" aria-hidden="true">💫</div>
+          <div class="animate-bounce-slow absolute -top-4 -right-4 text-6xl" aria-hidden="true">🌸</div>
+          <div class="animate-bounce-slow absolute -bottom-4 -left-4 text-5xl" aria-hidden="true">💫</div>
         </div>
 
       </div>
@@ -123,4 +123,16 @@ const goHome = () => {
   router.visit(route('conversation.index'))
 }
 </script>
+<style scoped>
+.animate-bounce-slow {
+  animation: bounce 5s infinite alternate;
+}
+.animate-bounce-slow-delay {
+  animation: bounce 5s infinite alternate 1s;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+</style>
 
