@@ -24,7 +24,7 @@
 
       <template v-else>
         <!-- Écran d'accueil si aucune conversation n'est sélectionnée -->
-         <section class="flex flex-col justify-center items-center h-screen px-4 overflow-y-auto text-center space-y-6 pb-10 pt-140 lg:pt-70"
+         <section class="flex flex-col justify-center items-center h-screen px-4 overflow-y-auto text-center space-y-6 pb-10 pt-160 lg:pt-70"
                   aria-labelledby="welcome-title">
     <!-- Emoji et message de bienvenue -->
           <div class="text-6xl sm:text-7xl md:text-8xl mb-4 pt-6" 
