@@ -16,6 +16,7 @@ class SimpleAskService
     public const DEFAULT_MODEL = 'openai/gpt-5-mini';
 
     private string $apiKey;
+
     private string $baseUrl;
 
     public function __construct()
@@ -23,6 +24,7 @@ class SimpleAskService
         $this->apiKey = config('services.openrouter.api_key');
         $this->baseUrl = rtrim(config('services.openrouter.base_url', 'https://openrouter.ai/api/v1'), '/');
     }
+
     /**
      * Récupère la liste des modèles disponibles.
      *
@@ -41,8 +43,8 @@ class SimpleAskService
     {
         return cache()->remember('openrouter.models', now()->addHour(), function (): array {
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $this->apiKey,
-            ])->get($this->baseUrl . '/models');
+                'Authorization' => 'Bearer '.$this->apiKey,
+            ])->get($this->baseUrl.'/models');
 
             return collect($response->json('data', []))
                 ->sortBy('name')
@@ -57,8 +59,7 @@ class SimpleAskService
                     'supported_parameters' => $model['supported_parameters'] ?? [],
                 ])
                 ->values()
-                ->toArray()
-            ;
+                ->toArray();
         });
     }
 
@@ -80,18 +81,17 @@ class SimpleAskService
         $messages = [$this->getSystemPrompt(), ...$messages];
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Authorization' => 'Bearer '.$this->apiKey,
             'Content-Type' => 'application/json',
             'HTTP-Referer' => config('app.url'),
             'X-Title' => config('app.name'),
         ])
             ->timeout(120)
-            ->post($this->baseUrl . '/chat/completions', [
+            ->post($this->baseUrl.'/chat/completions', [
                 'model' => $model,
                 'messages' => $messages,
                 'temperature' => $temperature,
-            ])
-        ;
+            ]);
 
         // Gestion des erreurs
         if ($response->failed()) {
@@ -101,7 +101,7 @@ class SimpleAskService
 
         return $response->json('choices.0.message.content', '');
     }
-    
+
     // Новый метод для генерации заголовка
     /*public function generateTitle(string $botText): string
     {
@@ -116,17 +116,17 @@ class SimpleAskService
 
         return $title;
     }*/
-      /*  public function generateTitleFromTextAI(string $botText): string
+    /*  public function generateTitleFromTextAI(string $botText): string
 {
     // Промпт, который просит AI сделать короткий информативный заголовок
     $prompt = "Génère un titre très court et clair (3-6 mots) pour résumer cette conversation : \"$botText\"";
 
     // Отправляем запрос к AI, **только с этим текстом**, без всей истории сообщений
     $response = $this->sendMessage([
-        [
-            'role' => 'user',
-            'content' => [['type' => 'text', 'text' => $prompt]]
-        ]
+      [
+          'role' => 'user',
+          'content' => [['type' => 'text', 'text' => $prompt]]
+      ]
     ], self::DEFAULT_MODEL);
 
     // Чистим и возвращаем результат
@@ -139,29 +139,29 @@ class SimpleAskService
      * @return array{role: 'system', content: string}
      */
     private function getSystemPrompt(): array
-{
-    $user = auth()->user();
-    $preferences = $user?->preferences;
+    {
+        $user = auth()->user();
+        $preferences = $user?->preferences;
 
-    $now = now()->locale('fr')->format('l d F Y H:i');
+        $now = now()->locale('fr')->format('l d F Y H:i');
 
-    $personalisationText = '';
+        $personalisationText = '';
 
-    if ($preferences) {
-        if ($preferences->about) {
-            $personalisationText .= "\n\nÀ propos de l'utilisateur :\n{$preferences->about}";
+        if ($preferences) {
+            if ($preferences->about) {
+                $personalisationText .= "\n\nÀ propos de l'utilisateur :\n{$preferences->about}";
+            }
+
+            if ($preferences->behaviour) {
+                $personalisationText .= "\n\nComportement attendu de l'assistant :\n{$preferences->behaviour}";
+            }
+
+            if ($preferences->commands) {
+                $personalisationText .= "\n\nCommandes personnalisées à respecter :\n{$preferences->commands}";
+            }
         }
 
-        if ($preferences->behaviour) {
-            $personalisationText .= "\n\nComportement attendu de l'assistant :\n{$preferences->behaviour}";
-        }
-
-        if ($preferences->commands) {
-            $personalisationText .= "\n\nCommandes personnalisées à respecter :\n{$preferences->commands}";
-        }
-    }
-
-    $systemContent = <<<PROMPT
+        $systemContent = <<<PROMPT
 Tu es un assistant conversationnel.
 
 Date et heure : {$now}
@@ -174,18 +174,17 @@ IMPORTANT :
 - Le ton, le style et les commandes personnalisées sont prioritaires sur tout le reste.
 PROMPT;
 
-    return [
-        'role' => 'system',
-        'content' => $systemContent,
-    ];
-}
+        return [
+            'role' => 'system',
+            'content' => $systemContent,
+        ];
+    }
 
+    public function generateTitleFromTextAI(string $botText): string
+    {
+        $system = $this->getSystemPrompt(); // 👈 ТОТ ЖЕ САМЫЙ
 
-public function generateTitleFromTextAI(string $botText): string
-{
-    $system = $this->getSystemPrompt(); // 👈 ТОТ ЖЕ САМЫЙ
-
-    $userPrompt = <<<PROMPT
+        $userPrompt = <<<PROMPT
 Génère un titre très court et clair (3-6 mots) pour résumer cette conversation : \"$botText\
 
 Règles :
@@ -197,18 +196,16 @@ Message :
 {$botText}
 PROMPT;
 
-    $response = $this->sendMessage([
-        $system,
-        [
-            'role' => 'user',
-            'content' => [
-                ['type' => 'text', 'text' => $userPrompt]
-            ]
-        ]
-    ], self::DEFAULT_MODEL);
+        $response = $this->sendMessage([
+            $system,
+            [
+                'role' => 'user',
+                'content' => [
+                    ['type' => 'text', 'text' => $userPrompt],
+                ],
+            ],
+        ], self::DEFAULT_MODEL);
 
-    return trim($response) ?: 'Nouvelle conversation';
-}
-
-
+        return trim($response) ?: 'Nouvelle conversation';
+    }
 }

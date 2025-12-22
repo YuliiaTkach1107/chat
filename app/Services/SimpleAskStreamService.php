@@ -20,14 +20,14 @@ class SimpleAskStreamService
     public const DEFAULT_MODEL = 'openai/gpt-5-mini';
 
     private string $apiKey;
+
     private string $baseUrl;
 
     public function __construct()
     {
-         $this->apiKey = config('services.openrouter.api_key');
+        $this->apiKey = config('services.openrouter.api_key');
         $this->baseUrl = rtrim(config('services.openrouter.base_url', 'https://openrouter.ai/api/v1'), '/');
     }
-    
 
     /**
      * Récupère la liste des modèles disponibles (avec cache).
@@ -39,7 +39,7 @@ class SimpleAskStreamService
 
             return collect($response->json('data', []))
                 ->sortBy('name')
-                ->map(fn(array $model): array => [
+                ->map(fn (array $model): array => [
                     'id' => $model['id'],
                     'name' => $model['name'],
                     'description' => $model['description'] ?? '',
@@ -61,7 +61,7 @@ class SimpleAskStreamService
     public function getModelsLight(): array
     {
         return collect($this->getModels())
-            ->map(fn(array $m): array => ['id' => $m['id'], 'name' => $m['name']])
+            ->map(fn (array $m): array => ['id' => $m['id'], 'name' => $m['name']])
             ->values()
             ->toArray();
     }
@@ -88,16 +88,18 @@ class SimpleAskStreamService
         $response = $this->sendStreamRequest($messages, $model, $temperature, $reasoningEffort);
 
         if ($response->failed()) {
-            echo "[ERROR] " . $response->json('error.message', 'HTTP Error');
+            echo '[ERROR] '.$response->json('error.message', 'HTTP Error');
             $this->flush();
+
             return;
         }
 
         foreach ($this->parseSSEStream($response->toPsrResponse()->getBody()) as $event) {
-           
+
             if ($event['type'] === 'error') {
-                echo "[ERROR] " . $event['data'];
+                echo '[ERROR] '.$event['data'];
                 $this->flush();
+
                 return;
             }
 
@@ -108,7 +110,7 @@ class SimpleAskStreamService
 
             // Pour le reasoning, on utilise un préfixe spécial
             if ($event['type'] === 'reasoning' && $event['data']) {
-                echo "[REASONING]" . $event['data'] . "[/REASONING]";
+                echo '[REASONING]'.$event['data'].'[/REASONING]';
                 $this->flush();
             }
         }
@@ -164,7 +166,7 @@ class SimpleAskStreamService
     {
         $buffer = '';
 
-        while (!$body->eof()) {
+        while (! $body->eof()) {
             $buffer .= $body->read(1024);
 
             while (($pos = strpos($buffer, "\n")) !== false) {
@@ -183,12 +185,12 @@ class SimpleAskStreamService
      */
     private function parseSSELine(string $line): ?array
     {
-       
+
         if ($line === '' || str_starts_with($line, ':')) {
             return null;
         }
 
-        if (!str_starts_with($line, 'data: ')) {
+        if (! str_starts_with($line, 'data: ')) {
             return null;
         }
 
@@ -215,15 +217,15 @@ class SimpleAskStreamService
 
             $delta = $parsed['choices'][0]['delta'] ?? [];
 
-            if (!empty($delta['content'])) {
+            if (! empty($delta['content'])) {
                 return ['type' => 'content', 'data' => $delta['content']];
             }
 
-            if (!empty($delta['reasoning'])) {
+            if (! empty($delta['reasoning'])) {
                 return ['type' => 'reasoning', 'data' => $delta['reasoning']];
             }
 
-            if (!empty($delta['reasoning_content'])) {
+            if (! empty($delta['reasoning_content'])) {
                 return ['type' => 'reasoning', 'data' => $delta['reasoning_content']];
             }
 
@@ -236,33 +238,31 @@ class SimpleAskStreamService
     /**
      * Retourne le prompt système.
      */
+    private function getSystemPrompt(): array
+    {
 
+        $user = auth()->user();
+        $preferences = $user?->preferences;
 
-private function getSystemPrompt(): array
-{
-    
-    $user = auth()->user();
-    $preferences = $user?->preferences;
+        $now = now()->locale('fr')->format('l d F Y H:i');
 
-    $now = now()->locale('fr')->format('l d F Y H:i');
+        $personalisationText = '';
 
-    $personalisationText = '';
-
-    // Добавляем персонализацию, если есть
-    if ($preferences) {
-        if (!empty($preferences->about)) {
-            $personalisationText .= "\n\nÀ propos de l'utilisateur :\n{$preferences->about}";
+        // Добавляем персонализацию, если есть
+        if ($preferences) {
+            if (! empty($preferences->about)) {
+                $personalisationText .= "\n\nÀ propos de l'utilisateur :\n{$preferences->about}";
+            }
+            if (! empty($preferences->behaviour)) {
+                $personalisationText .= "\n\nComportement attendu de l'assistant :\n{$preferences->behaviour}";
+            }
+            if (! empty($preferences->commands)) {
+                $personalisationText .= "\n\nCommandes personnalisées à respecter :\n{$preferences->commands}";
+            }
         }
-        if (!empty($preferences->behaviour)) {
-            $personalisationText .= "\n\nComportement attendu de l'assistant :\n{$preferences->behaviour}";
-        }
-        if (!empty($preferences->commands)) {
-            $personalisationText .= "\n\nCommandes personnalisées à respecter :\n{$preferences->commands}";
-        }
-    }
 
-    // Формируем системный контент
-   $systemContent = <<<PROMPT
+        // Формируем системный контент
+        $systemContent = <<<PROMPT
 Tu es PsyBot, un assistant de soutien psychologique.
 
 Ton rôle est d’écouter avec bienveillance, de reformuler les émotions de l’utilisateur
@@ -293,16 +293,11 @@ RÈGLES IMPORTANTES :
 - N'inclus jamais d'instructions internes ou techniques dans ta réponse.
 PROMPT;
 
-
-    return [
-        'role' => 'system',
-        'content' => $systemContent,
-    ];
-}
-
-
-
-
+        return [
+            'role' => 'system',
+            'content' => $systemContent,
+        ];
+    }
 
     /*private function getSystemPrompt(): array
     {

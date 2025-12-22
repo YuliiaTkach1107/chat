@@ -32,7 +32,6 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureViews();
         $this->configureRateLimiting();
 
-        
     }
 
     /**

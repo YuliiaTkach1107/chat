@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 
 class LegalController extends Controller
 {
@@ -15,7 +14,7 @@ class LegalController extends Controller
                 'host' => 'OVH Cloud',
                 'publicationDirector' => 'Julia Tkachenko',
                 'contact' => 'contact@example.com',
-            ]
+            ],
         ]);
     }
 
@@ -32,13 +31,13 @@ class LegalController extends Controller
                 'aiTransparency' => 'L’utilisateur interagit avec une IA',
                 'disclaimer' => 'Les réponses peuvent contenir des erreurs, ne remplacent pas un professionnel.',
                 'modelsUsed' => ['GPT-5-mini', 'GPT-4o'],
-                'conversationUsage' => 'Les conversations peuvent être utilisées pour améliorer le service'
-            ]
+                'conversationUsage' => 'Les conversations peuvent être utilisées pour améliorer le service',
+            ],
         ]);
     }
+
     public function terms()
     {
         return Inertia::render('Legal/Terms');
     }
 }
-

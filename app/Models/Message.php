@@ -12,7 +12,8 @@ class Message extends Model
         'content',
     ];
 
-    public function conversation(){
+    public function conversation()
+    {
         return $this->belongsTo(Conversation::class);
     }
 }

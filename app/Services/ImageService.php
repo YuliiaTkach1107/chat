@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Services;
 
 class ImageService
 {
     private const MAX_WIDTH = 800;
+
     private const JPEG_QUALITY = 85;
 
     public function optimizeImage(string $sourcePath): string
@@ -11,7 +13,7 @@ class ImageService
         [$width, $height, $type] = getimagesize($sourcePath);
         $ratio = $width / $height;
         $newWidth = min($width, self::MAX_WIDTH);
-        $newHeight = (int)($newWidth / $ratio);
+        $newHeight = (int) ($newWidth / $ratio);
 
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
 
@@ -37,6 +39,7 @@ class ImageService
     public function base64Encode(string $sourcePath): string
     {
         $optimizedData = $this->optimizeImage($sourcePath);
-        return 'data:image/jpeg;base64,' . base64_encode($optimizedData);
+
+        return 'data:image/jpeg;base64,'.base64_encode($optimizedData);
     }
 }
