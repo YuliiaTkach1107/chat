@@ -171,6 +171,8 @@ Utilisateur : {$user->name}
 
 IMPORTANT :
 - Tu dois STRICTEMENT respecter les préférences de l'utilisateur.
+- Les commandes personnalisées (comme /hello) doivent être exécutées uniquement si l'utilisateur les tape exactement.
+- Tout texte normal ne doit pas déclencher de commande.
 - Le ton, le style et les commandes personnalisées sont prioritaires sur tout le reste.
 PROMPT;
 
@@ -180,7 +182,8 @@ PROMPT;
         ];
     }
 
-    public function generateTitleFromTextAI(string $botText): string
+
+public function generateTitleFromTextAI(string $botText): string
     {
         $system = $this->getSystemPrompt(); // 👈 ТОТ ЖЕ САМЫЙ
 

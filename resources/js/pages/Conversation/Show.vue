@@ -101,8 +101,6 @@ const { data, isFetching, isStreaming, send, cancel } = useStream('/ask-stream',
     }
     router.reload({
       only: ['conversations'],
-      preserveState: false,
-      preserveScroll: true,
     })
   },
   onError: () => {

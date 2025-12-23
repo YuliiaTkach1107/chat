@@ -151,6 +151,7 @@ class SimpleAskStreamService
             ->withHeaders([
                 'HTTP-Referer' => config('app.url'),
                 'X-Title' => config('app.name'),
+
             ])
             ->withOptions(['stream' => true])
             ->timeout(120)
