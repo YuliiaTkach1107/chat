@@ -9,7 +9,7 @@
     <div class="space-x-2">
       <button @click="acceptAll" class="px-3 py-1 bg-background border border-destructive rounded hover:cursor-pointer" aria-label="Accepter tous les cookies">Accepter</button>
       <button @click="rejectAll" class="bg-destructive text-white px-3 py-1 rounded hover:cursor-pointer" aria-label="Refuser tous les cookies">Refuser</button>
-      <button @click="openSettings" class="underline">Paramètres</button>
+      <button @click="openSettings" class="underline mr-16">Paramètres</button>
     </div>
   </div>
 

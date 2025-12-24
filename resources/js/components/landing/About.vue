@@ -62,7 +62,7 @@
           </div>
         </div>
 
-        <!-- Правая часть: статистика -->
+        <!-- Statistiques -->
         <div class="fade-in-right relative">
           <div class="grid grid-cols-2 gap-4">
             <article class="bg-gradient-to-br from-card to-accent/30 border border-border rounded-2xl p-6 shadow-lg text-center"

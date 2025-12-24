@@ -16,11 +16,11 @@ Route::post('/ask-stream', [\App\Http\Controllers\AskStreamController::class, 's
         ->name('stream.post');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/psy_bot', [ConversationController::class, 'index'])->name('conversation.index');
-    Route::get('/psy_bot/{conversation}', [ConversationController::class, 'show'])->name('conversation.show');
-    Route::post('/psy_bot', [ConversationController::class, 'store'])->name('conversation.store');
-    Route::delete('/psy_bot/{conversation}', [ConversationController::class, 'destroy'])->name('conversation.destroy');
-    Route::put('/psy_bot/{conversation}', [ConversationController::class, 'update'])->name('conversation.update');
+    Route::get('/chat', [ConversationController::class, 'index'])->name('conversation.index');
+    Route::get('/chat/{conversation}', [ConversationController::class, 'show'])->name('conversation.show');
+    Route::post('/chat', [ConversationController::class, 'store'])->name('conversation.store');
+    Route::delete('/chat/{conversation}', [ConversationController::class, 'destroy'])->name('conversation.destroy');
+    Route::put('/chat/{conversation}', [ConversationController::class, 'update'])->name('conversation.update');
 });
 
 Route::post('/logout', [\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'destroy'])
@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::post('/psy_bot/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::post('/chat/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
 });
 Route::post('/conversation/select-model', [ConversationController::class, 'selectModel'])
     ->name('model.select');
@@ -54,4 +54,7 @@ Route::get('/legal/ai-act', function () {
     return Inertia::render('Legal/AiAct');
 })->name('legal.ai-act');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 require __DIR__.'/settings.php';
